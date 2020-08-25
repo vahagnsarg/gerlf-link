@@ -54,6 +54,7 @@ export default function App() {
                 }
               }else{
                 setGolfId(data);
+                storeData(value);
                 setIsLoading(false);
               }
               
@@ -67,6 +68,7 @@ export default function App() {
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('golf_id')
+      console.log(value)
       if(value !== null) {
         setGolfId(value);
       }
@@ -76,9 +78,17 @@ export default function App() {
     }
   }
 
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('golf_id', value)
+    } catch (e) {
+      // saving error
+    }
+  }
+
   useEffect(() => {
 
-    getData;
+    getData();
 
     setTimeout(() => {
       setIsLoading(false);

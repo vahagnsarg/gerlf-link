@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import colors from '../config/colors';
+
 
 class MainApp extends Component {
     state = {  }
@@ -19,12 +21,12 @@ class MainApp extends Component {
 const styles = StyleSheet.create({
     containerFullScreen: {
         flex: 1,
-        backgroundColor: 'pink',
+        backgroundColor: colors.primary,
     },
 
     containerSafeView: {
         flex: 1,
-        backgroundColor: 'pink'
+        backgroundColor: colors.primary,
     },
 });
 

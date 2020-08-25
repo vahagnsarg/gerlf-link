@@ -7,9 +7,11 @@ import {
     Button, 
     KeyboardAvoidingView, 
     Keyboard,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Image
 } from 'react-native';
 import { AuthContext } from '../components/Context';
+
 
 
 const LoginPage = () => {
@@ -24,6 +26,7 @@ const LoginPage = () => {
                 style={styles.mainContainer}   
                 behavior={Platform.OS == "ios" ? "padding" : "height"}>
                 <View style={styles.container}>
+                    <Image source={require('../assets/gerlf_link_logo.png')} style={styles.image}/>
                     <Text style={styles.heading}>Enter Your GA</Text>
                     <TextInput 
                     style={styles.textInput}
@@ -47,9 +50,15 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'orange',
         borderRadius: 10,
+        backgroundColor: 'white',
         textAlign: "center",
         fontSize: 20,
         fontWeight: '300',
+    },
+
+    image: {
+        height: 300,
+        width: 400,
     },
 
     button:{
@@ -69,7 +78,6 @@ const styles = StyleSheet.create({
     container: { 
         flex:1,
         alignItems: "center",
-        justifyContent:'center'
     },
 
 });

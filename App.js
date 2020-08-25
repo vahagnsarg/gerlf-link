@@ -1,27 +1,38 @@
 import React, { useEffect, useState, useMemo} from 'react';
-import { StyleSheet, ActivityIndicator, View, SafeAreaView, Alert} from 'react-native';
+import { 
+  StyleSheet, 
+  ActivityIndicator, 
+  View, 
+  SafeAreaView, 
+  Alert,
+  Platform,
+  StatusBar
+} from 'react-native';
 import MyStats from './pages/MyStats';
 import Friends from './pages/Friends';
-import LoginScreen from './pages/LoginScreen';
+import LoginPage from './pages/LoginPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from './components/Context';
+import Screen from './components/Screen';
+
+import colors from './config/colors';
 
 
 function HomeScreen() {
   return (
-    <SafeAreaView style={styles.containerSafeView}>
+    <Screen>
       <MyStats/>
-    </SafeAreaView> 
+    </Screen> 
   );
 }
 
 function FriendsScreen() {
   return (
-    <SafeAreaView style={styles.containerSafeView}>
+    <Screen>
       <Friends/>
-    </SafeAreaView> 
+    </Screen>
   );
 }
 
@@ -34,8 +45,7 @@ export default function App() {
 
   const authContext = React.useMemo(() => ({
     login: (value) => {
-    
-      fetch(`http:localhost:8080/api/v1/getHandicap?handicap=${value}&months=0`)
+        fetch(`http:localhost:8080/api/v1/getHandicap?handicap=${value}&months=0`)
             .then(response => response.json())
             .then(data => {
               if(data.hasOwnProperty("status")){
@@ -48,9 +58,11 @@ export default function App() {
               }
               
             }
-        );
+        ).catch(e => {
+            Alert.alert('Seems like you offline')
+        })
     }
-  }));
+}));
 
   const getData = async () => {
     try {
@@ -76,7 +88,7 @@ export default function App() {
   if( isLoading ){
     return(
       <View style={styles.loadView}>
-          <ActivityIndicator size="large" color="orange" />
+          <ActivityIndicator size="large" color="orange"/>
       </View>
     )
   }
@@ -87,14 +99,16 @@ export default function App() {
         <NavigationContainer>
           { golfId !== null  ? (
               <Tab.Navigator initialRouteName="Home"
-                activeColor= 'green'
+                activeColor= 'red'
                 inactiveColor="black"
-                barStyle={{ backgroundColor: 'pink' }}>
+                barStyle={{ backgroundColor: colors.primary }}>
                   <Tab.Screen name="Home" component={HomeScreen}/>
                   <Tab.Screen name="Friends" component={FriendsScreen}/>
                 </Tab.Navigator>
             ) : (
-              <LoginScreen/>
+              <Screen>
+                <LoginPage/>
+              </Screen>
             )
           } 
           </NavigationContainer>
@@ -106,17 +120,19 @@ export default function App() {
 const styles = StyleSheet.create({
   containerFullScreen: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: colors.primary,
   },
 
   containerSafeView: {
     flex: 1,
-    backgroundColor: 'pink'
+    backgroundColor: colors.primary,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
 
   loadView:{
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-},
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+  },
 });

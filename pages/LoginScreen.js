@@ -4,6 +4,9 @@ import LoginPage from './LoginPage';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import colors from '../config/colors';
+
+
 
 class LoginScreen extends Component {
 
@@ -13,9 +16,7 @@ class LoginScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.containerSafeView}>
-                <LoginPage/>
-            </SafeAreaView> 
+            <LoginPage/>
         );
     }
 }
@@ -24,7 +25,7 @@ class LoginScreen extends Component {
 const styles = StyleSheet.create({
     containerSafeView: {
         flex: 1,
-        backgroundColor: 'pink'
+        backgroundColor: colors.primary
     },
 });
 

@@ -21,7 +21,7 @@ function Screen(props){
 const styles = StyleSheet.create({
     containerSafeView: {
         flex: 1,
-        backgroundColor: colors.primary,
+
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
 })

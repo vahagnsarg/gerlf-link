@@ -6,21 +6,31 @@ import {
   SafeAreaView, 
   Alert,
   Platform,
-  StatusBar
+  StatusBar,
+  Button
 } from 'react-native';
 import MyStats from './pages/MyStats';
 import Friends from './pages/Friends';
 import LoginPage from './pages/LoginPage';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from './components/Context';
 import Screen from './components/Screen';
 
 import colors from './config/colors';
 
+const Tab = createMaterialBottomTabNavigator();
+const FriendStack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-function HomeScreen() {
+
+function MyStatsScreen() {
   return (
     <Screen>
       <MyStats/>
@@ -28,15 +38,49 @@ function HomeScreen() {
   );
 }
 
-function FriendsScreen() {
+function FriendsScreen( {navigation} ) {
   return (
     <Screen>
-      <Friends/>
+      <Friends navigation={navigation}/>
     </Screen>
   );
 }
 
-const Tab = createMaterialBottomTabNavigator();
+
+function FriendsStackScreen() {
+  return (
+    <FriendStack.Navigator>
+      <FriendStack.Screen
+        name="A"
+        component={FriendsScreen}
+        options={({ navigation, route }) => ({
+            title: 'Friends',
+            headerStyle: {
+              backgroundColor: colors.primary,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          })
+        }
+      />
+    </FriendStack.Navigator>
+  );
+}
+
+
+const tabNavigator = () => {
+        return( 
+          <Tab.Navigator initialRouteName="Home"
+                activeColor= 'red'
+                inactiveColor="black"
+                barStyle={{ backgroundColor: colors.primary }}>
+            <Tab.Screen name="Home" component={MyStatsScreen}/>
+            <Tab.Screen name="Friends" component={FriendsStackScreen}/>
+          </Tab.Navigator>
+        )
+}
 
 export default function App() {
 
@@ -108,13 +152,22 @@ export default function App() {
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
           { golfId !== null  ? (
-              <Tab.Navigator initialRouteName="Home"
-                activeColor= 'red'
-                inactiveColor="black"
-                barStyle={{ backgroundColor: colors.primary }}>
-                  <Tab.Screen name="Home" component={HomeScreen}/>
-                  <Tab.Screen name="Friends" component={FriendsScreen}/>
-                </Tab.Navigator>
+            <Drawer.Navigator
+            drawerType="slide"
+            drawerStyle={{
+              backgroundColor: colors.primary,
+              width: 240,
+            }}
+            drawerContentOptions={{
+              activeBackgroundColor: 'orange',
+              activeTintColor: 'black',
+            }}
+            
+            >
+              <Drawer.Screen name="Home" component={tabNavigator} />
+              <Drawer.Screen name="About" component={tabNavigator} />
+              <Drawer.Screen name="GIVE ME MONEY" component={tabNavigator} />
+            </Drawer.Navigator>
             ) : (
               <Screen>
                 <LoginPage/>

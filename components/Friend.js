@@ -5,13 +5,13 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import colors from '../config/colors';
 
-function Friend({ name, history , handicap, renderRightActions}){
+function Friend({ name, data, golf_id , handicap, renderRightActions}){
     return(
         <Swipeable renderRightActions={renderRightActions}>
             <View style={styles.container}>
                 <View style={styles.information}>
                     <Text style={styles.name}>{name}</Text>
-                    <FriendsListDetail />
+                    <FriendsListDetail style={styles.detail} data={data}/>
                 </View>
                 <View style={styles.handicap}>
                     <Text>{handicap}</Text>
@@ -37,8 +37,17 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        textAlign: "center"
+        textAlign: "center",
+        fontWeight: "600",
+        fontSize: 20
     }, 
+
+    detail: {
+        alignItems:"center",
+        alignContent:"center",
+        alignSelf:"center",
+        textAlign: "center"
+    }
 })
 
 export default Friend

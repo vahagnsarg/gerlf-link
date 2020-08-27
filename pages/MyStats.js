@@ -59,7 +59,10 @@ class MyStats extends Component {
 
                 this.setState(newState);
             }else{
-                fetch('http:localhost:8080/api/v1/getHandicap?handicap=3012904968&months=0')
+
+                const handicapNumber = await AsyncStorage.getItem('golf_id')
+
+                fetch(`http:localhost:8080/api/v1/getHandicap?handicap=${handicapNumber}&months=0`)
                     .then(response => response.json())
                     .then(data => {
                         let newState = {...this.state}
@@ -84,6 +87,20 @@ class MyStats extends Component {
         }
     }
 
+    // getGolfId = async () => {
+    //     try {
+    //         const value = await AsyncStorage.getItem('golf_id')
+    //         console.log(value)
+    //         if(value !== null) {
+    //             console.log(value)
+    //             this.setState({handicapNumber: value});
+    //         }
+    //     } catch(e) {
+    //         // error reading value
+    //         console.log(e);
+    //     }
+    // }
+
     refreshPage = () => {
         this.setState({refreshing: true});
 
@@ -93,13 +110,13 @@ class MyStats extends Component {
             that.setState({refreshing: false})
         }, 2000);
 
-        //if(refreshData) wait()this.setState({refreshing: false});
     }
 
     handicapEndPoint = () => {
 
-        let handicapNumber = '3012904968';
         //let handicapNumber = '3010602055';
+        let handicapNumber = this.state.handicapNumber 
+        
 
         fetch(`http:localhost:8080/api/v1/getHandicap?handicap=${handicapNumber}&months=0`)
             .then(response => response.json())
@@ -198,9 +215,9 @@ class MyStats extends Component {
 
 
     componentDidMount = () => {
-
-        this.getData();
         
+        this.getData();
+
     };
 
 

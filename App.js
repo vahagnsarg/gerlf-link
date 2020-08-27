@@ -9,9 +9,13 @@ import {
   StatusBar,
   Button
 } from 'react-native';
+
+import { tabNavigator } from './navigation/TabScreens'
+import { DrawerContent } from './navigation/DrawerContent'
+
 import MyStats from './pages/MyStats';
 import Friends from './pages/Friends';
-import LoginPage from './pages/LoginPage';
+import {LoginScreen} from './pages/LoginPage';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -25,62 +29,9 @@ import Screen from './components/Screen';
 
 import colors from './config/colors';
 
-const Tab = createMaterialBottomTabNavigator();
-const FriendStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const LoginStack = createStackNavigator();
 
-
-function MyStatsScreen() {
-  return (
-    <Screen>
-      <MyStats/>
-    </Screen> 
-  );
-}
-
-function FriendsScreen( {navigation} ) {
-  return (
-    <Screen>
-      <Friends navigation={navigation}/>
-    </Screen>
-  );
-}
-
-
-function FriendsStackScreen() {
-  return (
-    <FriendStack.Navigator>
-      <FriendStack.Screen
-        name="A"
-        component={FriendsScreen}
-        options={({ navigation, route }) => ({
-            title: 'Friends',
-            headerStyle: {
-              backgroundColor: colors.primary,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          })
-        }
-      />
-    </FriendStack.Navigator>
-  );
-}
-
-
-const tabNavigator = () => {
-        return( 
-          <Tab.Navigator initialRouteName="Home"
-                activeColor= 'red'
-                inactiveColor="black"
-                barStyle={{ backgroundColor: colors.primary }}>
-            <Tab.Screen name="Home" component={MyStatsScreen}/>
-            <Tab.Screen name="Friends" component={FriendsStackScreen}/>
-          </Tab.Navigator>
-        )
-}
 
 export default function App() {
 
@@ -106,8 +57,23 @@ export default function App() {
         ).catch(e => {
             Alert.alert('Seems like you offline')
         })
+    },
+
+    signOut: () =>{
+        setGolfId(null);
+        clearAppData();
+        setIsLoading(false);
     }
 }));
+
+  const clearAppData = async function() {
+    try {
+        const keys = await AsyncStorage.getAllKeys();
+        await AsyncStorage.multiRemove(keys);
+    } catch (error) {
+        console.error('Error clearing app data.');
+    }
+  }
 
   const getData = async () => {
     try {
@@ -150,28 +116,26 @@ export default function App() {
   return (
     <View style={styles.containerFullScreen}>
       <AuthContext.Provider value={authContext}>
+
         <NavigationContainer>
           { golfId !== null  ? (
-            <Drawer.Navigator
-            drawerType="slide"
-            drawerStyle={{
-              backgroundColor: colors.primary,
-              width: 240,
-            }}
-            drawerContentOptions={{
-              activeBackgroundColor: 'orange',
-              activeTintColor: 'black',
-            }}
+              <Drawer.Navigator
+              drawerType="slide"
+              drawerStyle={{
+                backgroundColor: colors.primary,
+                width: 240,
+              }}
+              drawerContentOptions={{
+                activeBackgroundColor: 'orange',
+                activeTintColor: 'black',
+              }}
+              drawerContent={props => <DrawerContent {...props}/>}
+              >
+                <Drawer.Screen name="MainScreen" component={tabNavigator} />
+              </Drawer.Navigator>
             
-            >
-              <Drawer.Screen name="Home" component={tabNavigator} />
-              <Drawer.Screen name="About" component={tabNavigator} />
-              <Drawer.Screen name="GIVE ME MONEY" component={tabNavigator} />
-            </Drawer.Navigator>
             ) : (
-              <Screen>
-                <LoginPage/>
-              </Screen>
+                <LoginScreen/>
             )
           } 
           </NavigationContainer>

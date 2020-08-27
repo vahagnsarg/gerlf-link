@@ -98,32 +98,44 @@ function Friends( {navigation}) {
     }, []);   
 
     return (
-            <>
-                <View style={styles.mainContainer}>
-                    <FlatList 
-                    data={friends}
-                    keyExtractor={friend => friend.order.toString()}
-                    renderItem={({ item }) => 
-                        <Friend 
-                        name={item.name}
-                        handicap={item.handicap}
-                        golf_id={item.golf_id}
-                        data={item.data}
-                        renderRightActions={() => <DeleteItemAction /> }
-                        />
-                    }
-                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshFriendsListScroll}/>}
-                    ItemSeparatorComponent={() => 
-                        <View style={{ width:"100%", height: 1, backgroundColor: 'black'}} />
-                    }/>
+        <>
+            { friends.length === 0 
+                ? 
+                (
+                    <View>
+                        <Text>Add your first Friend</Text>
+                    </View>
+                ) : 
+                (
+                    <View style={styles.mainContainer}>
+                        <FlatList 
+                        data={friends}
+                        keyExtractor={friend => friend.order.toString()}
+                        renderItem={({ item }) => 
+                            <Friend 
+                            name={item.name}
+                            handicap={item.handicap}
+                            golf_id={item.golf_id}
+                            data={item.data}
+                            renderRightActions={() => <DeleteItemAction /> }
+                            />
+                        }
+                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshFriendsListScroll}/>}
+                        ItemSeparatorComponent={() => 
+                            <View style={{ width:"100%", height: 1, backgroundColor: 'black'}} />
+                        }/>
+                    </View>
+                )
+            }
+            <Modal visible={modalVisible} animationType='slide'>
+                <View style={styles.modalStyle}>
+                <AddFriend 
+                    close = {() => setModalVisible(false)}
+                    add = {addFriend}
+                />
                 </View>
-                <Modal visible={modalVisible} animationType='slide'>
-                    <AddFriend 
-                        close = {() => setModalVisible(false)}
-                        add = {addFriend}
-                    />
-                </Modal>
-            </>
+            </Modal>
+        </>
         )
 }
 
@@ -131,6 +143,11 @@ const styles = StyleSheet.create({
     mainContainer:{
         flex: 1
     },
+
+    modalStyle:{
+        backgroundColor: colors.primary, 
+        flex:1
+    }
 })
 
 export default Friends;

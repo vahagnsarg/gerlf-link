@@ -10,6 +10,7 @@ import { StyleSheet,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Screen from './Screen'
+import colors from '../config/colors';
 
 
 
@@ -38,7 +39,6 @@ class AddFriend extends Component {
     render() {
 
         return (
-            
             <Screen>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <KeyboardAvoidingView 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     mainContainer:{
         flex:1,
         alignItems: "center",
-        paddingTop: 40
+        paddingTop: 40,
     },
 
     textInput: { 

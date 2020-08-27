@@ -12,34 +12,43 @@ import {
 } from 'react-native';
 import { AuthContext } from '../components/Context';
 
+import Screen from '../components/Screen'
 
+export function LoginScreen( ) {
+    return (
+        <Screen>
+            <LoginPage/>
+        </Screen>
+    );
+}
 
-const LoginPage = () => {
+function LoginPage() {
 
     const { login } = React.useContext(AuthContext);
 
     const [input, setInput] = React.useState('');
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAvoidingView 
-                style={styles.mainContainer}   
-                behavior={Platform.OS == "ios" ? "padding" : "height"}>
-                <View style={styles.container}>
-                    <Image source={require('../assets/gerlf_link_logo.png')} style={styles.image}/>
-                    <Text style={styles.heading}>Enter Your GA</Text>
-                    <TextInput 
-                    style={styles.textInput}
-                    keyboardType="numeric"
-                    onChangeText={value => setInput(value)} ></TextInput>
-                    <Button 
-                    title='Submit' 
-                    onPress={() => {login(input)}}
-                    style={styles.button}
-                    />
-                </View>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+        
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <KeyboardAvoidingView 
+                    style={styles.mainContainer}   
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}>
+                    <View style={styles.container}>
+                        <Image source={require('../assets/gerlf_link_logo.png')} style={styles.image}/>
+                        <Text style={styles.heading}>Enter Your GA</Text>
+                        <TextInput 
+                        style={styles.textInput}
+                        keyboardType="numeric"
+                        onChangeText={value => setInput(value)} ></TextInput>
+                        <Button 
+                        title='Submit' 
+                        onPress={() => {login(input)}}
+                        style={styles.button}
+                        />
+                    </View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
     );
 }
 
@@ -81,5 +90,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-export default LoginPage;

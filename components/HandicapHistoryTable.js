@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, } from 'react-native';
 import HandicapHistoryItem from './HandicapHistoryItem';
 
 class HandicapHistoryTable extends Component {

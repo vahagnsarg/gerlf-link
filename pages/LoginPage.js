@@ -40,12 +40,16 @@ function LoginPage() {
                         <TextInput 
                         style={styles.textInput}
                         keyboardType="numeric"
-                        onChangeText={value => setInput(value)} ></TextInput>
-                        <Button 
-                        title='Submit' 
-                        onPress={() => {login(input)}}
-                        style={styles.button}
-                        />
+                        onChangeText={value => setInput(value)} />
+
+                        <View style={{padding:20}}>
+                            <Button 
+                            title='Submit' 
+                            onPress={() => {login(input)}}
+                            style={styles.button}
+                            />
+                        </View>
+                        
                     </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
     },
 
     button:{
-        padding: 20,
+
     },
 
     heading:{

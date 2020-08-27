@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         alignItems: 'center',
-        height:'100%',
+        height: 130,
     },
 
     content: {
@@ -40,12 +40,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
-        height: '30%'
+        height: '30%',
+        height: 30,
     },
 
     information: {
+        height: 100,
         fontSize: 60,
-        textAlign: "center"
+        textAlign: "center",
+        paddingTop: 10
     },
 })
 

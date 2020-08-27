@@ -17,7 +17,19 @@ import { AuthContext } from '../components/Context';
 
 import { Drawer } from 'react-native-paper';
 
+let initialRender = true; // <-- Add this
+
 export function DrawerContent(props){
+
+    if (initialRender) {
+        // On the first render (when the drawer will flash, return null so 
+        //  null will "flash")
+        // Don't forget to set this flag to false or you're always going 
+        // to have a ghost drawer
+        initialRender = false;
+        return null;
+    }
+
 
     const { signOut } = React.useContext(AuthContext);
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl} from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl, FlatList} from 'react-native';
 import HighlightedStat from '../components/HighlightedStat';
 import HandicapHistoryTable from '../components/HandicapHistoryTable';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -86,20 +86,6 @@ class MyStats extends Component {
           // error reading value
         }
     }
-
-    // getGolfId = async () => {
-    //     try {
-    //         const value = await AsyncStorage.getItem('golf_id')
-    //         console.log(value)
-    //         if(value !== null) {
-    //             console.log(value)
-    //             this.setState({handicapNumber: value});
-    //         }
-    //     } catch(e) {
-    //         // error reading value
-    //         console.log(e);
-    //     }
-    // }
 
     refreshPage = () => {
         this.setState({refreshing: true});
@@ -240,8 +226,7 @@ class MyStats extends Component {
         return (
                 <View style={styles.mainContainer}>
                     <View style={styles.container_top}>
-                            <Text>My Stats</Text>
-                            <Text>{this.state.handicapDetails.golfLinkNo}</Text>
+                            <Text style={{fontWeight: '600'}}>{this.state.handicapDetails.golfLinkNo}</Text>
                             <Text>{this.state.handicapDetails.clubName}</Text> 
 
                             <View style={styles.officalGa}>
@@ -253,14 +238,13 @@ class MyStats extends Component {
                             </View>
                     </View>
                     
-                    
 
                     <View style={styles.container_bottom}>
                         <ScrollView 
-                        contentContainerStyle={{}}
-                        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refreshPage}/>}>
+                            contentContainerStyle={{}}
+                            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refreshPage}/>}>
 
-                            <View style={styles.statsView}>
+                            <View style={styles.statsViewTop}>
                                 <View style={styles.topStat}>
                                     <HighlightedStat title='Last Round' result={lastRoundScore}/>
                                 </View>
@@ -269,6 +253,8 @@ class MyStats extends Component {
                                     <HighlightedStat title='Best Round' result={this.bestRound()}/>
                                 </View>
 
+                            </View>
+                            <View style={styles.statsViewBottom}>
                                 <View style={styles.topStat}>
                                     <HighlightedStat title='Average Round' result={this.averageRound()}/>
                                 </View>
@@ -286,6 +272,8 @@ class MyStats extends Component {
                     </View>
                 </View>
             )
+
+            
 
         // return (
         //     <View style={styles.bodyContainer}>
@@ -311,6 +299,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         alignSelf:"stretch",
+        paddingTop: 10
     },
 
     container_bottom: {
@@ -330,12 +319,16 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    statsView: {
-        height: 350,
+    statsViewTop: {
+        height: 170,
         flexDirection: "row",
-        flexWrap: 'wrap',
-        padding: 20,
-        alignItems: "center",
+        justifyContent:'center'
+    },
+
+    statsViewBottom: {
+        height: 170,
+        flexDirection: "row",
+        justifyContent:'center'
     },
 
     topStat: {
@@ -349,7 +342,7 @@ const styles = StyleSheet.create({
     },
 
     officalGaHandicap:{
-        fontSize: 40
+        fontSize: 60
     }
 })
 

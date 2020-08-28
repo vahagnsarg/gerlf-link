@@ -1,35 +1,41 @@
 import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 
-function FriendsListDetail( { data } ){
+function FriendsListDetail( { data, handicapError} ){
 
     const [dataEmpty, setDataEmpty] = React.useState(true)
 
     useEffect(() => {
-        if(data !== undefined){
-            if(data.hasOwnProperty('handicapHistory')){
-                setDataEmpty(false);
-            }
+        if(data.hasOwnProperty('handicapDetails')){
+            console.log('handicapDetails')
+            setDataEmpty(false);
         }
 
+        console.log(dataEmpty)
     }, []);   
 
+    
+
+    if(handicapError){
+        return(
+            <View> 
+                <Text style={styles.text}>Seems like the handicap does not exist</Text>
+            </View>
+        )
+    }
+
+    if(dataEmpty){
+        return(
+            <View> 
+                <Text style={styles.text}>Please refresh to get data</Text>
+            </View>
+        )
+    }
+
     return(
-        <View>
-            {
-                dataEmpty ?  
-                (
-                    <View> 
-                        <Text style={styles.text}>Please refresh to get data</Text>
-                    </View>
-                ) : 
-                (
-                    <View> 
-                        <Text style={styles.text}>Yes data Homie</Text>
-                    </View> 
-                )
-            }
-        </View>
+            <View> 
+                <Text style={styles.text}>Yes data Homie</Text>
+            </View> 
     )
 }
 

@@ -17,6 +17,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Screen from '../components/Screen';
 
+import { Ionicons } from '@expo/vector-icons'; 
 import colors from '../config/colors';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -49,9 +50,9 @@ function FriendsStackScreen() {
             options={({ navigation, route }) => ({
                 title: 'Friends',
                 headerStyle: {
-                backgroundColor: colors.primary,
+                    backgroundColor: colors.primary,
                 },
-                headerTintColor: '#fff',
+                headerTintColor: colors.headingTextColor,
                 headerTitleStyle: {
                 fontWeight: 'bold',
                 },
@@ -66,11 +67,28 @@ function FriendsStackScreen() {
 export function tabNavigator() {
     return( 
         <Tab.Navigator initialRouteName="Home"
-            activeColor= 'red'
+            activeColor= {colors.headingTextColor}
             inactiveColor="black"
             barStyle={{ backgroundColor: colors.primary }}>
-            <Tab.Screen name="My Stats" component={MyStatsScreen}/>
-            <Tab.Screen name="Friends" component={FriendsStackScreen}/>
+            <Tab.Screen 
+                name="My Stats" 
+                component={MyStatsScreen}
+                options={{
+                    tabBarLabel: 'My Stats',
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons name="ios-stats" size={24} color={color} />
+                    ),
+                }}
+                />
+            <Tab.Screen 
+                name="Friends" 
+                component={FriendsStackScreen}
+                options={{
+                    tabBarLabel: 'Friends',
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons name="ios-people" size={24} color={color} />
+                    ),
+                }}/>
         </Tab.Navigator>
     )
 }

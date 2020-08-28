@@ -37,9 +37,9 @@ class HandicapHistoryItem extends Component {
             )       
         }
 
-        const showMoreInformation = this.state.showMoreInformation;
+        const showMoreInformationToggle = this.state.showMoreInformation;
         let moreInformationView = null
-        if(showMoreInformation){
+        if(showMoreInformationToggle){
             moreInformationView = (
                 <View style={styles.table}>
                     <View style={styles.subRow}>

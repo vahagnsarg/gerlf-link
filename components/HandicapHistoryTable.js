@@ -30,9 +30,9 @@ class HandicapHistoryTable extends Component {
                 </View>
             </View>
             {
-                data.map((round) => { // This will render a row for each data element.
+                data.map((round, index) => { // This will render a row for each data element.
                     return <HandicapHistoryItem
-                        data={round}
+                        data={round} key={index}
                     />
                 })
             }

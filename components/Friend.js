@@ -5,16 +5,16 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import colors from '../config/colors';
 
-function Friend({ name, data, golf_id , handicap, renderRightActions}){
+function Friend({ name, data, golf_id , handicap, handicapError, renderRightActions}){
     return(
         <Swipeable renderRightActions={renderRightActions}>
             <View style={styles.container}>
                 <View style={styles.information}>
                     <Text style={styles.name}>{name}</Text>
-                    <FriendsListDetail style={styles.detail} data={data}/>
+                    <FriendsListDetail style={styles.detail} data={data} handicapError={handicapError}/>
                 </View>
                 <View style={styles.handicap}>
-                    <Text>{handicap}</Text>
+                    <Text style={styles.handicapText}>{handicap}</Text>
                 </View>
             </View>
         </Swipeable>
@@ -34,6 +34,11 @@ const styles = StyleSheet.create({
 
     handicap: {
         flex: 1
+    },
+
+    handicapText:{
+        fontWeight: '500', 
+        fontSize: 25
     },
 
     name: {

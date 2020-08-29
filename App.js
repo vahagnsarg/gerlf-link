@@ -149,6 +149,7 @@ export default function App() {
                 activeTintColor: 'black',
               }}
               drawerContent={props => <DrawerContent {...props}/>}
+              edgeWidth={150}
               >
                 <Drawer.Screen name="MainScreen" component={tabNavigator} />
               </Drawer.Navigator>

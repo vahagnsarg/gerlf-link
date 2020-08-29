@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
     },
 
     headingText:{
-        fontWeight:'800'
+        fontWeight:'bold'
     },
 
     outOfMaxRound: {
-        fontWeight: "100"
+        color: 'gray'
     },
 
     inTopScore:{

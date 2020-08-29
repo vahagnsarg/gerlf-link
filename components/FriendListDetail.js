@@ -1,19 +1,9 @@
 import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet} from 'react-native';
+import Dots from './Dots'
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-function FriendsListDetail( { data, handicapError} ){
-
-    const [dataEmpty, setDataEmpty] = React.useState(true)
-
-    useEffect(() => {
-        if(data.hasOwnProperty('handicapDetails')){
-            console.log('handicapDetails')
-            setDataEmpty(false);
-        }
-
-        console.log(dataEmpty)
-    }, []);   
-
+function FriendsListDetail( { data, handicapError, dataFirstRefresh, dataEmpty} ){
     
 
     if(handicapError){
@@ -24,18 +14,29 @@ function FriendsListDetail( { data, handicapError} ){
         )
     }
 
-    if(dataEmpty){
-        return(
-            <View> 
-                <Text style={styles.text}>Please refresh to get data</Text>
-            </View>
-        )
+    let dotsOveriew = null;
+    if(!dataFirstRefresh && !handicapError){
+        const history = data.handicapHistory;
+        dotsOveriew = <Dots history={history} /> 
     }
 
     return(
-            <View> 
-                <Text style={styles.text}>Yes data Homie</Text>
-            </View> 
+        <>
+            {
+                dataEmpty ? 
+                    (
+                        <View> 
+                            <Text style={styles.text}>Please refresh to get data</Text>
+                        </View>
+                    ) 
+                    : 
+                    (
+                        <View style={styles.dots}> 
+                            {dotsOveriew}
+                        </View> 
+                    )
+            }
+        </>
     )
 }
 
@@ -43,6 +44,10 @@ function FriendsListDetail( { data, handicapError} ){
 const styles = StyleSheet.create({
     text: {
         textAlign: "center"
+    },
+
+    dots: { 
+        paddingTop: 10
     }
 })
 

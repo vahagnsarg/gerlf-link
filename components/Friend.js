@@ -1,17 +1,19 @@
-import React from 'react';
+import React , { useEffect , useState}from 'react';
 import { View, StyleSheet, Text } from 'react-native'
 import FriendsListDetail from './FriendListDetail';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import colors from '../config/colors';
 
-function Friend({ name, data, golf_id , handicap, handicapError, renderRightActions}){
+function Friend({ name, data, dataEmpty , handicap, handicapError, renderRightActions, golf_id}){
+
     return(
         <Swipeable renderRightActions={renderRightActions}>
             <View style={styles.container}>
                 <View style={styles.information}>
                     <Text style={styles.name}>{name}</Text>
-                    <FriendsListDetail style={styles.detail} data={data} handicapError={handicapError}/>
+                    <Text style={styles.golf_id}>{golf_id}</Text>
+                    <FriendsListDetail style={styles.detail} data={data} handicapError={handicapError} dataEmpty={dataEmpty}/>
                 </View>
                 <View style={styles.handicap}>
                     <Text style={styles.handicapText}>{handicap}</Text>
@@ -24,7 +26,7 @@ function Friend({ name, data, golf_id , handicap, handicapError, renderRightActi
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        height: 70,
+        height: 80,
         alignItems: "center"
     },
 
@@ -37,14 +39,19 @@ const styles = StyleSheet.create({
     },
 
     handicapText:{
-        fontWeight: '500', 
+        fontWeight: 'bold', 
         fontSize: 25
     },
 
     name: {
         textAlign: "center",
-        fontWeight: "600",
+        fontWeight: 'bold',
         fontSize: 20
+    }, 
+
+    golf_id: {
+        textAlign: "center",
+        fontSize: 10
     }, 
 
     detail: {

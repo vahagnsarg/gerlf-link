@@ -66,6 +66,7 @@ function Friends( {navigation}) {
             handicap: 'N/A',
             golf_id: golf_id,
             handicapError: false,
+            dataEmpty: true,
             data: {}
         });
         
@@ -131,13 +132,23 @@ function Friends( {navigation}) {
                     }
                 })
             //fetch(`http:localhost:8080/api/v1/getHandicap?handicap=${handicapNumber}&months=0`, {mode: "cors"})
-                .then(response => response.json())
+                .then(response => {
+                    if(!response.ok){
+                        console.log('Reponse not OK in refresh for '+ friend.golf_id)
+                        return;
+                    }
+                    return response.json()
+                })
                 .then(data => {
                         friend.data = data;
+                        friend.dataEmpty = false;
                         friend.handicapError = false;
                         friend.handicap = data.handicapDetails.exactHandicap
-                }
-            );
+                })
+                .catch((e) => {
+                    //console.log('Errr in refresh for '+ friend.golf_id)
+                    friend.handicapError = true;
+                })
         })
 
         console.log('Friends.js: Friends refreshed')
@@ -177,7 +188,8 @@ function Friends( {navigation}) {
                             golf_id={item.golf_id}
                             handicapError={item.handicapError}
                             data={item.data}
-                            renderRightActions={() => <DeleteItemAction item={item} deleteFriend={deleteFriend}/> }
+                            dataEmpty = {item.dataEmpty}
+                            renderRightActions={(progress, dragX) => <DeleteItemAction progress={progress} dragX={dragX} item={item} deleteFriend={deleteFriend}/> }
                             />
                         }
                         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshFriendsListScroll}/>}

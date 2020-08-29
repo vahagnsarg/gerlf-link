@@ -5,7 +5,8 @@ import {
     View, 
     SafeAreaView, 
     Text,
-    Button,
+    Platform,
+    StatusBar,
     Image, Alert
 } from 'react-native';
 
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
     image:{
         height: 150,
         width: 200,
-        alignSelf:"center"
+        alignSelf:"center",
+        marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     }
 })

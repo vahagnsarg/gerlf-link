@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     },
 
     headingText:{
-        fontWeight:'800'
+        fontWeight:'bold'
     }
 })
 

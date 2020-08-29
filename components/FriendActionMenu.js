@@ -1,11 +1,22 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert, Animated } from 'react-native';
+import React, {useState} from 'react';
+import { 
+    StyleSheet, 
+    View, 
+    TouchableOpacity, 
+    Alert, 
+    Animated, 
+    Modal,
+    Text
+} from 'react-native';
+import EditFriend from './EditFriend'
 import { FontAwesome , AntDesign} from '@expo/vector-icons'; 
 
 import colors from '../config/colors';
 
 
-function DeleteItemAction( { progress, dragX, deleteFriend, item } ){
+function FriendActionMenu( { progress, dragX, deleteFriend, item, name, order, golf_id, editFriend} ){
+
+    const [showModal, updateShowModal] = React.useState(false);
 
     const scale = dragX.interpolate({
         inputRange: [-100, 0],
@@ -13,11 +24,23 @@ function DeleteItemAction( { progress, dragX, deleteFriend, item } ){
         extrapolate: 'clamp',
         });
 
+    const _dragX = new Animated.Value(0);
+
+    const reset = () => {
+        Animated.spring(_dragX, {
+            toValue: 0,
+            useNativeDriver: true,
+            tension: 15,
+            friction: 5,
+        }).start();
+    };
+
     return(
+        <>
         <Animated.View style={[styles.container, { transform: [{ scale }] }]}>
             <TouchableOpacity 
                 style={styles.edit}
-                onPress={() => {}}>
+                onPress={() => {updateShowModal(true)}}>
                     <AntDesign 
                         name='edit'
                         size={35}
@@ -36,7 +59,7 @@ function DeleteItemAction( { progress, dragX, deleteFriend, item } ){
                         },
                         { 
                             text: "Get rid of them", 
-                            onPress: () => {deleteFriend(item.order)}
+                            onPress: () => {deleteFriend(order)}
                         }
                     ],
                         { cancelable: true }
@@ -48,6 +71,19 @@ function DeleteItemAction( { progress, dragX, deleteFriend, item } ){
                     />
             </TouchableOpacity>
         </Animated.View>
+        <Modal visible={showModal}>
+            <View style={styles.modalStyle}>
+                <EditFriend 
+                    editFriend={editFriend} 
+                    name={name} 
+                    golf_id={golf_id}
+                    order={order}
+                    close={() => updateShowModal(false)}
+                    closeRow = {() => reset()}
+                />
+            </View>
+        </Modal>
+        </>
     )
 }
 
@@ -67,8 +103,12 @@ const styles = StyleSheet.create({
     container:{
         flexDirection:'row',
         width: 140,
+    },
+    modalStyle:{
+        backgroundColor: colors.primary, 
+        flex:1
     }
 })
 
 
-export default DeleteItemAction;
+export default FriendActionMenu;

@@ -10,7 +10,7 @@ import { StyleSheet,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Friend from '../components/Friend';
-import DeleteItemAction from '../components/DeleteItemAction';
+import FriendActionMenu from '../components/FriendActionMenu';
 import AddFriend from '../components/AddFriend'
 import { Feather } from '@expo/vector-icons'; 
 
@@ -67,6 +67,7 @@ function Friends( {navigation}) {
             golf_id: golf_id,
             handicapError: false,
             dataEmpty: true,
+            modifiedWithoutRefresh: false,
             data: {}
         });
         
@@ -89,6 +90,23 @@ function Friends( {navigation}) {
             })
         }
         
+
+        setFriends(friendsList);
+        storeFriends(friendsList);
+    }
+
+    function editFriend(order, name, golf_id){
+        const friendsList = [...friends]
+
+        const position = order - 1
+
+        let friend = friendsList[position];
+
+        friend.name = name;
+        friend.golf_id = golf_id;
+        friend.modifiedWithoutRefresh = true;
+        friend.dataEmpty = true;
+        friend.handicapError = false,
 
         setFriends(friendsList);
         storeFriends(friendsList);
@@ -131,7 +149,6 @@ function Friends( {navigation}) {
                         'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'
                     }
                 })
-            //fetch(`http:localhost:8080/api/v1/getHandicap?handicap=${handicapNumber}&months=0`, {mode: "cors"})
                 .then(response => {
                     if(!response.ok){
                         console.log('Reponse not OK in refresh for '+ friend.golf_id)
@@ -143,7 +160,8 @@ function Friends( {navigation}) {
                         friend.data = data;
                         friend.dataEmpty = false;
                         friend.handicapError = false;
-                        friend.handicap = data.handicapDetails.exactHandicap
+                        friend.modifiedWithoutRefresh = false;
+                        friend.handicap = data.handicapDetails.exactHandicap;
                 })
                 .catch((e) => {
                     //console.log('Errr in refresh for '+ friend.golf_id)
@@ -183,13 +201,19 @@ function Friends( {navigation}) {
                         keyExtractor={friend => { return(friend.order.toString() + "#" + friend.golf_id.toString())}}
                         renderItem={({ item }) => 
                             <Friend 
-                            name={item.name}
-                            handicap={item.handicap}
-                            golf_id={item.golf_id}
-                            handicapError={item.handicapError}
-                            data={item.data}
-                            dataEmpty = {item.dataEmpty}
-                            renderRightActions={(progress, dragX) => <DeleteItemAction progress={progress} dragX={dragX} item={item} deleteFriend={deleteFriend}/> }
+                            {...item}
+                            deleteFriend={deleteFriend}
+                            editFriend={editFriend}
+                            // renderRightActions={(progress, dragX) => 
+                            //     <FriendActionMenu 
+                            //         progress={progress} 
+                            //         dragX={dragX} 
+                            //         item={item} 
+                            //         deleteFriend={deleteFriend}
+                            //         editFriend={editFriend}
+                            //         /> 
+                            //     }
+                            // 
                             />
                         }
                         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshFriendsListScroll}/>}

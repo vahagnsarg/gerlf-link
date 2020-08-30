@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { AuthContext } from '../components/Context';
 
+import AppButton from '../components/AppButton'
+
 import Screen from '../components/Screen'
 
 export function LoginScreen( ) {
@@ -43,14 +45,14 @@ function LoginPage() {
                         onChangeText={value => setInput(value)} />
 
                         <View style={{padding:20}}>
-                            <Button 
+                            <AppButton 
                             title='Submit' 
                             onPress={() => {login(input)}}
-                            style={styles.button}
                             />
                         </View>
-                        
+                        <View style={{ flex : 1 }} />    
                     </View>
+                    
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
     );
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
     container: { 
         flex:1,
         alignItems: "center",
+        justifyContent:'flex-end'
     },
 
 });

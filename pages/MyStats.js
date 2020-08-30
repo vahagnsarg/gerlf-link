@@ -284,21 +284,21 @@ class MyStats extends Component {
 
                             <View style={styles.statsViewTop}>
                                 <View style={styles.topStat}>
-                                    <HighlightedStat title='Last Round' result={lastRoundScore}/>
+                                    <HighlightedStat title='Last Round' result={lastRoundScore} showPoints={true}/>
                                 </View>
 
                                 <View style={styles.topStat}>
-                                    <HighlightedStat title='Best Round' result={this.bestRound()}/>
+                                    <HighlightedStat title='Best Round' result={this.bestRound()} showPoints={true}/>
                                 </View>
 
                             </View>
                             <View style={styles.statsViewBottom}>
                                 <View style={styles.topStat}>
-                                    <HighlightedStat title='Average Round' result={this.averageRound()}/>
+                                    <HighlightedStat title='Average Round' result={this.averageRound()} showPoints={true}/>
                                 </View>
 
                                 <View style={styles.topStat}>
-                                    <HighlightedStat title='Play To needed' result={this.neededRound()}/>
+                                    <HighlightedStat title='Play To Needed' result={this.neededRound()} showPoints={false}/>
                                 </View>
                             </View>
 
@@ -337,7 +337,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         alignSelf:"stretch",
-        paddingTop: 10
+        paddingTop: 10,
+        marginBottom: 5
     },
 
     container_bottom: {

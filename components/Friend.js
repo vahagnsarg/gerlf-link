@@ -7,8 +7,6 @@ import {
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import FriendActionMenu from '../components/FriendActionMenu';
 
-import Dots from './Dots'
-
 
 function FriendsListDetail( { data, handicapError, dataFirstRefresh, dataEmpty, modifiedWithoutRefresh} ){
     
@@ -47,7 +45,31 @@ function FriendsListDetail( { data, handicapError, dataFirstRefresh, dataEmpty, 
     )
 }
 
+function Dots( { history } ){
+    
+    let dots = history.map(function(round, index){
 
+        if(round.isOutOfMaxRound){
+            return null;
+        }
+
+        let top8 = false
+        if(round.top8ScoreFlag){
+            top8 = true;
+        }
+
+        const styleDot = (top8) ? 'highlightDot' : 'normalDot'
+        return <View style={styles[styleDot]} key={index}/>;
+    });
+
+    return(
+            <View style={{flexDirection: "row", justifyContent: "center"}}>
+                {dots.reverse()}
+            </View>
+    )
+
+
+}
 
 
 function Friend( { 
@@ -61,23 +83,24 @@ function Friend( {
         modifiedWithoutRefresh, 
         deleteFriend, 
         editFriend, 
-        order
+        index
     }){
 
-    return(
+    return( 
         
         <Swipeable 
-        renderRightActions={(progress, dragX) => 
-            <FriendActionMenu 
-                progress={progress} 
-                dragX={dragX} 
-                order={order} 
-                name={name}
-                golf_id={golf_id}
-                deleteFriend={deleteFriend}
-                editFriend={editFriend}
-                /> 
-            }>
+            renderRightActions={(progress, dragX) => 
+                <FriendActionMenu 
+                    progress={progress} 
+                    dragX={dragX} 
+                    index={index}
+                    name={name}
+                    golf_id={golf_id}
+                    deleteFriend={deleteFriend}
+                    editFriend={editFriend}
+                    /> 
+                }
+        >
             <View style={styles.container}>
                 <View style={styles.information}>
                     <Text style={styles.name}>{name}</Text>
@@ -142,6 +165,22 @@ const styles = StyleSheet.create({
 
     dots: { 
         paddingTop: 10
+    },
+
+    normalDot:{
+        width: 10,
+        height: 10,
+        borderRadius: 50,
+        backgroundColor: 'grey',
+        marginLeft: 3
+    },
+
+    highlightDot:{
+        width: 10,
+        height: 10,
+        borderRadius: 50,
+        backgroundColor: 'orange',
+        marginLeft: 3
     }
 })
 

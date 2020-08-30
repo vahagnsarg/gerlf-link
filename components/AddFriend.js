@@ -10,6 +10,9 @@ import { StyleSheet,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Screen from './Screen'
+
+import AppButton from './AppButton'
+
 import colors from '../config/colors';
 
 
@@ -58,11 +61,14 @@ class AddFriend extends Component {
                                 keyboardType="numeric"
                                 onChangeText={value => this.setGolfLink(value)} 
                             />
-                            <Button 
-                                title="Add" 
-                                onPress={() => this.addFriend(this.state.name, this.state.golflink)}
-                            />
-                            <Button title="Close" onPress={this.props.close} />
+                            <View style={styles.buttonLayout}>
+                                <AppButton title="Cancel" onPress={this.props.close} />
+
+                                <AppButton 
+                                    title="Add" 
+                                    onPress={() => this.addFriend(this.state.name, this.state.golflink)}
+                                />
+                            </View>
                     </KeyboardAvoidingView>
                 </TouchableWithoutFeedback>
             </Screen>
@@ -89,6 +95,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '300',
     },
+
+    buttonLayout: {
+        flexDirection: 'row',
+        
+    }
 })
 
 export default AddFriend;

@@ -10,6 +10,8 @@ class HandicapHistoryTable extends Component {
     render() {
         const data = this.props.data;
 
+        let maxRoundCourt = 0;
+
         return (
             <View style={styles.table}>
                 <View style={styles.row}>
@@ -31,8 +33,13 @@ class HandicapHistoryTable extends Component {
             </View>
             {
                 data.map((round, index) => { // This will render a row for each data element.
+                    let firstMaxRound = null;
+                    if(round.isOutOfMaxRound && maxRoundCourt === 0){
+                        firstMaxRound = true;
+                        maxRoundCourt++
+                    }
                     return <HandicapHistoryItem
-                        data={round} key={index}
+                        data={round} key={index} firstMaxRound={firstMaxRound}
                     />
                 })
             }

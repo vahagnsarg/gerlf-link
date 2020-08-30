@@ -71,14 +71,15 @@ function Friends( {navigation}) {
             data: {}
         });
         
+        setFriends([]);
         setFriends(friendsList);
         storeFriends(friendsList);
     }
 
-    function deleteFriend(order){
+    function deleteFriend(index){
         const friendsList = [...friends]
 
-        const position = order - 1
+        const position = index
         friendsList.splice(position, 1);
 
         if (friendsList.length !== 0 ){
@@ -90,23 +91,25 @@ function Friends( {navigation}) {
             })
         }
         
-
+        setFriends([]);
         setFriends(friendsList);
         storeFriends(friendsList);
     }
 
-    function editFriend(order, name, golf_id){
+    function editFriend(index, name, golf_id){
         const friendsList = [...friends]
 
-        const position = order - 1
+        const position = index;
 
         let friend = friendsList[position];
 
         friend.name = name;
-        friend.golf_id = golf_id;
-        friend.modifiedWithoutRefresh = true;
-        friend.dataEmpty = true;
-        friend.handicapError = false,
+        if(friend.golf_id != golf_id){
+            friend.golf_id = golf_id;
+            friend.modifiedWithoutRefresh = true;
+            friend.dataEmpty = true;
+            friend.handicapError = false;
+        }
 
         setFriends(friendsList);
         storeFriends(friendsList);
@@ -199,27 +202,19 @@ function Friends( {navigation}) {
                         <FlatList 
                         data={friends}
                         keyExtractor={friend => { return(friend.order.toString() + "#" + friend.golf_id.toString())}}
-                        renderItem={({ item }) => 
+                        renderItem={({ item, index }) => 
                             <Friend 
-                            {...item}
-                            deleteFriend={deleteFriend}
-                            editFriend={editFriend}
-                            // renderRightActions={(progress, dragX) => 
-                            //     <FriendActionMenu 
-                            //         progress={progress} 
-                            //         dragX={dragX} 
-                            //         item={item} 
-                            //         deleteFriend={deleteFriend}
-                            //         editFriend={editFriend}
-                            //         /> 
-                            //     }
-                            // 
+                                {...item}
+                                index={index}
+                                deleteFriend={deleteFriend}
+                                editFriend={editFriend}
                             />
                         }
                         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshFriendsListScroll}/>}
                         ItemSeparatorComponent={() => 
                             <View style={{ width:"100%", height: 1, backgroundColor: 'black'}} />
-                        }/>
+                        }
+                        keyboardShouldPersistTaps='handled'/>
                     </View>
                 )
             }

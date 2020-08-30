@@ -14,7 +14,7 @@ import { FontAwesome , AntDesign} from '@expo/vector-icons';
 import colors from '../config/colors';
 
 
-function FriendActionMenu( { progress, dragX, deleteFriend, item, name, order, golf_id, editFriend} ){
+function FriendActionMenu( { progress, dragX, deleteFriend, item, name, index, golf_id, editFriend} ){
 
     const [showModal, updateShowModal] = React.useState(false);
 
@@ -23,17 +23,6 @@ function FriendActionMenu( { progress, dragX, deleteFriend, item, name, order, g
         outputRange: [1, 0],
         extrapolate: 'clamp',
         });
-
-    const _dragX = new Animated.Value(0);
-
-    const reset = () => {
-        Animated.spring(_dragX, {
-            toValue: 0,
-            useNativeDriver: true,
-            tension: 15,
-            friction: 5,
-        }).start();
-    };
 
     return(
         <>
@@ -59,7 +48,7 @@ function FriendActionMenu( { progress, dragX, deleteFriend, item, name, order, g
                         },
                         { 
                             text: "Get rid of them", 
-                            onPress: () => {deleteFriend(order)}
+                            onPress: () => {deleteFriend(index)}
                         }
                     ],
                         { cancelable: true }
@@ -77,9 +66,8 @@ function FriendActionMenu( { progress, dragX, deleteFriend, item, name, order, g
                     editFriend={editFriend} 
                     name={name} 
                     golf_id={golf_id}
-                    order={order}
+                    index={index}
                     close={() => updateShowModal(false)}
-                    closeRow = {() => reset()}
                 />
             </View>
         </Modal>

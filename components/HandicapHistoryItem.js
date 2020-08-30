@@ -21,18 +21,24 @@ class HandicapHistoryItem extends Component {
     render() {
         const round = this.props.data;
 
-        const date = new Date(round.dateHeld).toLocaleDateString();
+        const date = new Date(round.dateHeld).toDateString();
+
+        let maxRound = this.props.firstMaxRound;
+        let maxRoundLineBreak = null
 
         let textStyle = 'inTopScore'
         if(round.isOutOfMaxRound){
+            if(maxRound){
+                maxRoundLineBreak = (<View style={{ width:"100%", height: 1, backgroundColor: 'black'}} />)
+            }
             textStyle = 'outOfMaxRound'
         }
 
-        let newHandicap = <Text style={styles[textStyle]}>{round.newHandicap}</Text>
+        let slopedPlayedTo = <Text style={styles[textStyle]}>{round.slopedPlayedTo}</Text>
         if(round.top8ScoreFlag){
-            newHandicap = (
+            slopedPlayedTo = (
                 <View style={styles.top8Score}>
-                    <Text>{round.newHandicap}</Text>
+                    <Text>{round.slopedPlayedTo}</Text>
                 </View>
             )       
         }
@@ -77,13 +83,14 @@ class HandicapHistoryItem extends Component {
 
         return (
             <View style={{alignSelf: 'stretch'}}>
+                {maxRoundLineBreak}
                 <TouchableOpacity style={styles.row} onPress={()=> {
                     this.showMoreInformation()
                     }}>
                         <View style={styles.columnMain}>
                             <Text style={styles[textStyle]}>{round.location}</Text>
-                            <Text style={styles[textStyle]}>{round.competitionType}</Text>
-                            <Text style={styles[textStyle]}>{date}</Text>
+                            <Text style={[styles[textStyle], styles.roundTypeText]}>{round.competitionType}</Text>
+                            <Text style={[styles[textStyle], styles.dateText]}>{date}</Text>
                         </View>
                         <View style={styles.columnData}>
                             <Text style={styles[textStyle]}>{round.handicappingScore}</Text>
@@ -92,10 +99,10 @@ class HandicapHistoryItem extends Component {
                             <Text style={styles[textStyle]}>{round.dailyHandicap}</Text>
                         </View>
                         <View style={styles.columnData}>
-                            <Text style={styles[textStyle]}>{round.playedTo}</Text>
+                            {slopedPlayedTo}
                         </View>
                         <View style={styles.columnData}>
-                            {newHandicap}
+                            <Text style={styles[textStyle]}>{round.newHandicap}</Text>
                         </View>
                 </TouchableOpacity>
                 {moreInformationView}
@@ -156,6 +163,14 @@ const styles = StyleSheet.create({
 
     inTopScore:{
 
+    },
+
+    roundTypeText:{
+        fontSize: 10
+    },
+
+    dateText:{
+        fontSize: 10
     },
 
 })

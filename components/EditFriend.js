@@ -11,6 +11,8 @@ import { StyleSheet,
 
 import Screen from './Screen'
 
+import AppButton from './AppButton'
+
 import colors from '../config/colors';
 
 
@@ -29,14 +31,12 @@ class AddFriend extends Component {
         this.setState({golf_id: value})
     }
 
-    editFriend = (order, name, golf_id) => {
-        this.props.editFriend(order, name, golf_id);
-        this.props.closeRow();
+    editFriend = (index, name, golf_id) => {
+        this.props.editFriend(index, name, golf_id);
         this.props.close();
     }
 
     closeModal = () => {
-        this.props.closeRow();
         this.props.close();
     }
 
@@ -66,11 +66,14 @@ class AddFriend extends Component {
                                 onChangeText={value => this.setGolfLink(value)}
                                 defaultValue={this.state.golf_id} 
                             />
-                            <Button 
-                                title="Save" 
-                                onPress={() => this.editFriend(this.props.order, this.state.name, this.state.golf_id)}
-                            />
-                            <Button title="Close" onPress={() => this.closeModal()} />
+
+                            <View style={styles.buttonLayout}>
+                                <AppButton title="Cancel" onPress={() => this.closeModal()} />
+                                <AppButton 
+                                    title="Save" 
+                                    onPress={() => this.editFriend(this.props.index, this.state.name, this.state.golf_id)}
+                                />
+                            </View>
                     </KeyboardAvoidingView>
                 </TouchableWithoutFeedback>
             </Screen>
@@ -97,6 +100,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '300',
     },
+
+    buttonLayout: {
+        flexDirection: 'row',
+        
+    }
 })
 
 export default AddFriend;

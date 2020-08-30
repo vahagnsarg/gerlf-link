@@ -60,18 +60,19 @@ export default function App() {
                         'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'
                     }
                 })
-            .then(response => response.json())
+              .then(response => {
+                  if(response.ok){
+                    return response.json()
+                  }
+
+                  Alert.alert('There was an erorr getting that GA number. Please try again')
+              })
             .then(data => {
-              if(data.hasOwnProperty("status")){
-                if(data.status !== 200){
-                    Alert.alert('That dont work honey, try again')
+                if(data != undefined){
+                  setGolfId(data);
+                  storeData(value);
+                  setIsLoading(false);
                 }
-              }else{
-                setGolfId(data);
-                storeData(value);
-                setIsLoading(false);
-              }
-              
             }
         ).catch(e => {
             Alert.alert('Seems like you offline')

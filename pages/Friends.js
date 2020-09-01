@@ -9,11 +9,11 @@ import { StyleSheet,
     RefreshControl
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Friend from '../components/Friend';
-import FriendActionMenu from '../components/FriendActionMenu';
-import AddFriend from '../components/AddFriend'
-import { Feather } from '@expo/vector-icons'; 
 
+import Friend from '../components/Friend';
+import AddFriend from '../components/AddFriend'
+
+import { Feather } from '@expo/vector-icons'; 
 import colors from '../config/colors';
 
 function Friends( {navigation}) {

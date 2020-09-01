@@ -3,17 +3,17 @@ import { StyleSheet,
     Text, 
     View, 
     Button, 
-    TextInput, 
     KeyboardAvoidingView,  
     Keyboard,
     TouchableWithoutFeedback
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import Screen from './Screen'
 
+import AppTextInput from './AppTextInput'
 import AppButton from './AppButton'
 
 import colors from '../config/colors';
+import { color } from 'react-native-reanimated';
 
 
 
@@ -49,18 +49,9 @@ class AddFriend extends Component {
                     behavior={Platform.OS == "ios" ? "padding" : "height"}>                
                             <Text style={{paddingBottom: 20}}>Add friend Here plz</Text>
 
-                            <Text>Nickname</Text>
-                            <TextInput 
-                                style={styles.textInput}
-                                onChangeText={value => this.setName(value)} 
-                            />
+                            <AppTextInput title="Nickname" onChange= {this.setName} type='default'/>
+                            <AppTextInput title="Golflink Number" onChange= {this.setGolfLink} type='numeric'/>
 
-                            <Text>Golflink Number</Text>
-                            <TextInput 
-                                style={styles.textInput}
-                                keyboardType="numeric"
-                                onChangeText={value => this.setGolfLink(value)} 
-                            />
                             <View style={styles.buttonLayout}>
                                 <AppButton title="Cancel" onPress={this.props.close} />
 
@@ -85,13 +76,11 @@ const styles = StyleSheet.create({
     },
 
     textInput: { 
-        height: 40,
+        height: 60,
         width: "80%",
-        borderWidth: 2,
-        borderColor: 'orange',
+        marginBottom: 10,
         borderRadius: 10,
         backgroundColor: 'white',
-        textAlign: "center",
         fontSize: 20,
         fontWeight: '300',
     },

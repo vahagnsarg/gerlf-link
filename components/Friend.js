@@ -2,10 +2,16 @@ import React , { useEffect , useState }from 'react';
 import {  
     StyleSheet, 
     View, 
-    Text 
+    Text ,
+    TouchableOpacity,
+    Modal
 } from 'react-native'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import FriendActionMenu from '../components/FriendActionMenu';
+import { Appbar } from 'react-native-paper';
+import colors from '../config/colors';
+import FriendDetailModal from './FriendDetailModal';
+
 
 
 function FriendsListDetail( { data, handicapError, dataFirstRefresh, dataEmpty, modifiedWithoutRefresh} ){
@@ -86,38 +92,54 @@ function Friend( {
         index
     }){
 
+        const [openMoreInformation, setOpenMoreInformation] = React.useState(false)
+
     return( 
-        
-        <Swipeable 
-            renderRightActions={(progress, dragX) => 
-                <FriendActionMenu 
-                    progress={progress} 
-                    dragX={dragX} 
-                    index={index}
-                    name={name}
-                    golf_id={golf_id}
-                    deleteFriend={deleteFriend}
-                    editFriend={editFriend}
-                    /> 
-                }
-        >
-            <View style={styles.container}>
-                <View style={styles.information}>
-                    <Text style={styles.name}>{name}</Text>
-                    <Text style={styles.golf_id}>{golf_id}</Text>
-                    <FriendsListDetail 
-                        style={styles.detail} 
-                        data={data} 
-                        handicapError={handicapError} 
-                        dataEmpty={dataEmpty} 
-                        modifiedWithoutRefresh={modifiedWithoutRefresh}
-                    />
+        <>
+        <TouchableOpacity onPress={() => setOpenMoreInformation(true)} activeOpacity={1}>
+            <Swipeable 
+                renderRightActions={(progress, dragX) => 
+                    <FriendActionMenu 
+                        progress={progress} 
+                        dragX={dragX} 
+                        index={index}
+                        name={name}
+                        golf_id={golf_id}
+                        deleteFriend={deleteFriend}
+                        editFriend={editFriend}
+                        /> 
+                    }
+            >
+                <View style={styles.container}>
+                    <View style={styles.information}>
+                        <Text style={styles.name}>{name}</Text>
+                        <Text style={styles.golf_id}>{golf_id}</Text>
+                        <FriendsListDetail 
+                            style={styles.detail} 
+                            data={data} 
+                            handicapError={handicapError} 
+                            dataEmpty={dataEmpty} 
+                            modifiedWithoutRefresh={modifiedWithoutRefresh}
+                        />
+                    </View>
+                    <View style={styles.handicap}>
+                        <Text style={styles.handicapText}>{handicap}</Text>
+                    </View>
                 </View>
-                <View style={styles.handicap}>
-                    <Text style={styles.handicapText}>{handicap}</Text>
-                </View>
-            </View>
-        </Swipeable>
+            </Swipeable>
+        </TouchableOpacity>
+        <Modal visible={openMoreInformation} animationType="slide">
+            <FriendDetailModal 
+                name={name} 
+                golf_id={golf_id} 
+                data={data} 
+                closeAction={() => setOpenMoreInformation(false)}
+                handicapError={handicapError} 
+                dataEmpty={dataEmpty} 
+                modifiedWithoutRefresh={modifiedWithoutRefresh}
+            />
+        </Modal>
+        </>
     );
 }
 
@@ -179,7 +201,7 @@ const styles = StyleSheet.create({
         width: 10,
         height: 10,
         borderRadius: 50,
-        backgroundColor: 'orange',
+        backgroundColor: colors.secondary,
         marginLeft: 3
     }
 })

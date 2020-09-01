@@ -128,7 +128,7 @@ export default function App() {
   if( isLoading ){
     return(
       <View style={styles.loadView}>
-          <ActivityIndicator size="large" color="orange"/>
+          <ActivityIndicator size="large" color={colors.secondary}/>
       </View>
     )
   }
@@ -146,7 +146,7 @@ export default function App() {
                 width: 240,
               }}
               drawerContentOptions={{
-                activeBackgroundColor: 'orange',
+                activeBackgroundColor: colors.secondary,
                 activeTintColor: 'black',
               }}
               drawerContent={props => <DrawerContent {...props}/>}

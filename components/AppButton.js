@@ -6,6 +6,8 @@ import {
     TouchableOpacity
 } from 'react-native'
 
+import colors from '../config/colors';
+
 export default function AppButton( { onPress, title} ){
 
     return(
@@ -18,7 +20,7 @@ export default function AppButton( { onPress, title} ){
 const styles = StyleSheet.create({
     appButtonContainer: {
         elevation: 8,
-        backgroundColor: "orange",
+        backgroundColor: colors.secondary,
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 12,

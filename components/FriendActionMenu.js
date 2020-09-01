@@ -60,7 +60,7 @@ function FriendActionMenu( { progress, dragX, deleteFriend, item, name, index, g
                     />
             </TouchableOpacity>
         </Animated.View>
-        <Modal visible={showModal}>
+        <Modal visible={showModal} animationType="slide">
             <View style={styles.modalStyle}>
                 <EditFriend 
                     editFriend={editFriend} 

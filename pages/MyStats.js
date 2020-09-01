@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl, 
 import HighlightedStat from '../components/HighlightedStat';
 import HandicapHistoryTable from '../components/HandicapHistoryTable';
 import AsyncStorage from '@react-native-community/async-storage';
+import colors from '../config/colors';
 
 
 
@@ -256,7 +257,7 @@ class MyStats extends Component {
         if(this.state.status === 'offline'){
             return (
                 <View style={styles.loadView}>
-                    <ActivityIndicator size="large" color="orange" />
+                    <ActivityIndicator size="large" color={colors.secondary} />
                 </View>
             )
         }

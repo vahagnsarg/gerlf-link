@@ -9,8 +9,10 @@ import { StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
 
+
 import Screen from './Screen'
 
+import AppTextInput from './AppTextInput'
 import AppButton from './AppButton'
 
 import colors from '../config/colors';
@@ -52,20 +54,8 @@ class AddFriend extends Component {
                     behavior={Platform.OS == "ios" ? "padding" : "height"}>                
                             <Text style={{paddingBottom: 20}}>Edit friend Here plz</Text>
 
-                            <Text>Nickname</Text>
-                            <TextInput 
-                                style={styles.textInput}
-                                onChangeText={value => this.setName(value)}
-                                defaultValue={this.state.name}
-                            />
-
-                            <Text>Golflink Number</Text>
-                            <TextInput 
-                                style={styles.textInput}
-                                keyboardType="numeric"
-                                onChangeText={value => this.setGolfLink(value)}
-                                defaultValue={this.state.golf_id} 
-                            />
+                            <AppTextInput title="Nickname" onChange= {this.setName} type='default' defaultValue={this.state.name}/>
+                            <AppTextInput title="Golflink Number" onChange= {this.setGolfLink} type='numeric' defaultValue={this.state.golf_id} />
 
                             <View style={styles.buttonLayout}>
                                 <AppButton title="Cancel" onPress={() => this.closeModal()} />
@@ -93,7 +83,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: "80%",
         borderWidth: 2,
-        borderColor: 'orange',
+        borderColor: colors.secondary,
         borderRadius: 10,
         backgroundColor: 'white',
         textAlign: "center",

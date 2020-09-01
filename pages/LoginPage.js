@@ -16,6 +16,8 @@ import AppButton from '../components/AppButton'
 
 import Screen from '../components/Screen'
 
+import colors from '../config/colors';
+
 export function LoginScreen( ) {
     return (
         <Screen>
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: "80%",
         borderWidth: 2,
-        borderColor: 'orange',
+        borderColor: colors.secondary,
         borderRadius: 10,
         backgroundColor: 'white',
         textAlign: "center",

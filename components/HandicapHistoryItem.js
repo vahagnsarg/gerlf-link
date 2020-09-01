@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity} from 'react-native';
 import { CurrentRenderContext } from '@react-navigation/native';
 
+import colors from '../config/colors';
+
 class HandicapHistoryItem extends Component {
     state = { 
         showMoreInformation: false
@@ -145,10 +147,10 @@ const styles = StyleSheet.create({
     top8Score:{
         width:30,
         height:30,
-        backgroundColor: 'orange',
+        backgroundColor: colors.secondary,
         borderRadius: 50,
         borderStyle: "solid",
-        borderColor: 'orange',
+        borderColor: colors.secondary,
         justifyContent: "center",
         alignItems: 'center', 
     },

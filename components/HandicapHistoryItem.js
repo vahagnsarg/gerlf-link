@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity} from 'react-native';
 import { CurrentRenderContext } from '@react-navigation/native';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+
 import colors from '../config/colors';
 
 class HandicapHistoryItem extends Component {
@@ -36,13 +38,16 @@ class HandicapHistoryItem extends Component {
             textStyle = 'outOfMaxRound'
         }
 
-        let slopedPlayedTo = <Text style={styles[textStyle]}>{round.slopedPlayedTo}</Text>
+        let top8Style = null;
         if(round.top8ScoreFlag){
-            slopedPlayedTo = (
-                <View style={styles.top8Score}>
-                    <Text>{round.slopedPlayedTo}</Text>
-                </View>
-            )       
+            top8Style = 'top8Score';
+        }
+
+        let scoreStyle = '';
+        let badIcon = null;
+        if(round.handicappingScore < 26 && !round.isOutOfMaxRound){
+            badIcon = <MaterialCommunityIcons name="emoticon-poop" size={24} color="black" />
+            scoreStyle = 'badScoreStyle';
         }
 
         const showMoreInformationToggle = this.state.showMoreInformation;
@@ -84,24 +89,35 @@ class HandicapHistoryItem extends Component {
         }
 
         return (
-            <View style={{alignSelf: 'stretch'}}>
+            <View style={{alignSelf: 'stretch', marginTop: 3}}>
                 {maxRoundLineBreak}
                 <TouchableOpacity style={styles.row} onPress={()=> {
                     this.showMoreInformation()
                     }}>
                         <View style={styles.columnMain}>
-                            <Text style={styles[textStyle]}>{round.location}</Text>
-                            <Text style={[styles[textStyle], styles.roundTypeText]}>{round.competitionType}</Text>
-                            <Text style={[styles[textStyle], styles.dateText]}>{date}</Text>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <View style={{flex: 3}}>
+                                    <Text style={styles[textStyle]}>{round.location}</Text>
+                                    <Text style={[styles[textStyle], styles.roundTypeText]}>{round.competitionType}</Text>
+                                    <Text style={[styles[textStyle], styles.dateText]}>{date}</Text>
+                                </View>
+                                <View style={{justifyContent: 'center', paddingLeft:30, flex: 1}}>
+                                    {badIcon}
+                                </View>
+                            </View>
                         </View>
                         <View style={styles.columnData}>
-                            <Text style={styles[textStyle]}>{round.handicappingScore}</Text>
+                            <View style={styles[scoreStyle]}>
+                                <Text style={styles[textStyle]}>{round.handicappingScore}</Text>
+                            </View>
                         </View>
                         <View style={styles.columnData}>
                             <Text style={styles[textStyle]}>{round.dailyHandicap}</Text>
                         </View>
                         <View style={styles.columnData}>
-                            {slopedPlayedTo}
+                            <View style={styles[top8Style]}>
+                                <Text style={styles[textStyle]}>{round.slopedPlayedTo}</Text>
+                            </View>
                         </View>
                         <View style={styles.columnData}>
                             <Text style={styles[textStyle]}>{round.newHandicap}</Text>
@@ -174,6 +190,17 @@ const styles = StyleSheet.create({
     dateText:{
         fontSize: 10
     },
+
+    badScoreStyle:{
+        width:30,
+        height:30,
+        backgroundColor: 'red',
+        borderRadius: 50,
+        borderStyle: "solid",
+        borderColor: 'red',
+        justifyContent: "center",
+        alignItems: 'center', 
+    }
 
 })
 

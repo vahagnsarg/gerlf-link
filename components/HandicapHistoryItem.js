@@ -85,7 +85,7 @@ class HandicapHistoryItem extends Component {
                         </View>
                     </View>
                 </View>
-            )
+            ) 
         }
 
         return (

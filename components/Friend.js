@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import FriendActionMenu from '../components/FriendActionMenu';
-import { Appbar } from 'react-native-paper';
 import colors from '../config/colors';
 import FriendDetailModal from './FriendDetailModal';
 

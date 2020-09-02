@@ -16,7 +16,7 @@ class HandicapHistoryTable extends Component {
             <View style={styles.table}>
                 <View style={styles.row}>
                     <View style={styles.headingDetail}>
-                        <Text style={styles.headingText} >Round Details</Text>
+                        <Text style={styles.headingText} >round details</Text>
                     </View>
                     <View style={styles.headingScore}>
                         <Text style={styles.headingText}>score</Text>
@@ -39,7 +39,11 @@ class HandicapHistoryTable extends Component {
                         maxRoundCourt++
                     }
                     return <HandicapHistoryItem
-                        data={round} key={index} firstMaxRound={firstMaxRound}
+                        data={round} 
+                        key={index} 
+                        firstMaxRound={firstMaxRound}
+                        bestRound={this.props.bestRound}
+                        worstRound={this.props.worstRound}
                     />
                 })
             }

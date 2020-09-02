@@ -4,6 +4,7 @@ import HighlightedStat from '../components/HighlightedStat';
 import HandicapHistoryTable from '../components/HandicapHistoryTable';
 import AsyncStorage from '@react-native-community/async-storage';
 import colors from '../config/colors';
+import { round } from 'react-native-reanimated';
 
 
 
@@ -177,7 +178,7 @@ class MyStats extends Component {
         let highestRound = '0';
 
         for(let x in rounds){
-            if(x > 19){
+            if(rounds[x].isOutOfMaxRound){
                 continue;
             }
             if(rounds[x].handicappingScore > highestRound && rounds[x].handicappingScore !== 'N/A'){
@@ -185,6 +186,22 @@ class MyStats extends Component {
             }
         }
         return highestRound;
+    }
+
+    worstRound = () =>{
+        const rounds = this.state.handicapHistory;
+        let lowestRound = 100;
+
+        for(let x in rounds){
+            if(rounds[x].isOutOfMaxRound){
+                continue;
+            }
+            if(rounds[x].handicappingScore < lowestRound && rounds[x].handicappingScore !== 'N/A'){
+                lowestRound = rounds[x].handicappingScore;
+            }
+        }
+
+        return lowestRound;
     }
 
     
@@ -195,7 +212,7 @@ class MyStats extends Component {
         let noOfRounds = 0;
 
         for(let x in rounds){
-            if(x > 19){
+            if(rounds[x].isOutOfMaxRound){
                 continue;
             }
             if(rounds[x].handicappingScore !== 'N/A'){
@@ -216,7 +233,7 @@ class MyStats extends Component {
         };
 
         for(let x in rounds){
-            if(x > 19){
+            if(rounds[x].isOutOfMaxRound){
                 continue;
             }
             if(rounds[x].top8ScoreFlag){
@@ -304,7 +321,11 @@ class MyStats extends Component {
                             </View>
 
                             <View style={{padding: 10}}>
-                                <HandicapHistoryTable data={this.state.handicapHistory}/>
+                                <HandicapHistoryTable 
+                                    data={this.state.handicapHistory} 
+                                    bestRound={this.bestRound()}
+                                    worstRound={this.worstRound()}
+                                    />
                             </View>
 
                         </ScrollView>

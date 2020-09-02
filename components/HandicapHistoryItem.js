@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity} from 'react-native';
 import { CurrentRenderContext } from '@react-navigation/native';
 
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'; 
 
 import colors from '../config/colors';
 
@@ -33,7 +33,7 @@ class HandicapHistoryItem extends Component {
         let textStyle = 'inTopScore'
         if(round.isOutOfMaxRound){
             if(maxRound){
-                maxRoundLineBreak = (<View style={{ width:"100%", height: 1, backgroundColor: 'black'}} />)
+                maxRoundLineBreak = (<View style={styles.lineBreak} />)
             }
             textStyle = 'outOfMaxRound'
         }
@@ -43,11 +43,14 @@ class HandicapHistoryItem extends Component {
             top8Style = 'top8Score';
         }
 
-        let scoreStyle = '';
         let badIcon = null;
-        if(round.handicappingScore < 26 && !round.isOutOfMaxRound){
+        if(round.handicappingScore === this.props.worstRound && !round.isOutOfMaxRound){
             badIcon = <MaterialCommunityIcons name="emoticon-poop" size={24} color="black" />
-            scoreStyle = 'badScoreStyle';
+        }
+
+        let goodIcon = null;
+        if(round.handicappingScore === this.props.bestRound && !round.isOutOfMaxRound){
+            goodIcon = <FontAwesome5 name="smile" size={24} color={colors.primary} />
         }
 
         const showMoreInformationToggle = this.state.showMoreInformation;
@@ -89,27 +92,27 @@ class HandicapHistoryItem extends Component {
         }
 
         return (
-            <View style={{alignSelf: 'stretch', marginTop: 3}}>
-                {maxRoundLineBreak}
+            <>
+            {maxRoundLineBreak}
+            <View style={styles.mainContainer}>
                 <TouchableOpacity style={styles.row} onPress={()=> {
                     this.showMoreInformation()
                     }}>
                         <View style={styles.columnMain}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
-                                <View style={{flex: 3}}>
+                                <View styles={{flex: 9}}>
                                     <Text style={styles[textStyle]}>{round.location}</Text>
                                     <Text style={[styles[textStyle], styles.roundTypeText]}>{round.competitionType}</Text>
                                     <Text style={[styles[textStyle], styles.dateText]}>{date}</Text>
                                 </View>
-                                <View style={{justifyContent: 'center', paddingLeft:30, flex: 1}}>
+                                <View style={{justifyContent: 'center', flexDirection:"column-reverse", alignItems:"flex-end", flex: 1}}>
                                     {badIcon}
+                                    {goodIcon}
                                 </View>
                             </View>
                         </View>
                         <View style={styles.columnData}>
-                            <View style={styles[scoreStyle]}>
-                                <Text style={styles[textStyle]}>{round.handicappingScore}</Text>
-                            </View>
+                            <Text style={styles[textStyle]}>{round.handicappingScore}</Text>
                         </View>
                         <View style={styles.columnData}>
                             <Text style={styles[textStyle]}>{round.dailyHandicap}</Text>
@@ -125,11 +128,19 @@ class HandicapHistoryItem extends Component {
                 </TouchableOpacity>
                 {moreInformationView}
             </View>
+            </>
         );
     }
 }
 
 const styles = StyleSheet.create({
+
+    mainContainer:{
+        alignSelf: 'stretch', 
+        marginTop: 3,
+        marginBottom: 3
+    },
+
     table:{ 
         alignItems: 'center', 
         justifyContent: "center",
@@ -200,7 +211,17 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         justifyContent: "center",
         alignItems: 'center', 
-    }
+    },
+
+    lineBreak:{ 
+        width:"100%", 
+        height: 1, 
+        backgroundColor: colors.primary, 
+        padding:2, 
+        marginBottom:3
+    },
+
+
 
 })
 

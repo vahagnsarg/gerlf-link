@@ -75,10 +75,10 @@ export default function FriendDetailModal( {name, golf_id, data, closeAction, ha
                 stickyHeaderIndices={[1]}
                 style={{backgroundColor: colors.backgroundColor}}
             >
-                <View style={{paddingLeft: 10, paddingRight: 10}}>
-                    <HandicapChart data={data.handicapHistory} />
+                <View style={{padding: 10}}>
+                    <HandicapChart data={data.handicapHistory} screen='modal'/>
                 </View>
-                
+
                 <View style={{paddingLeft: 10, paddingRight: 10}}>
                     <RoundsTableHeader/>
                 </View>

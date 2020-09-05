@@ -7,7 +7,7 @@ import {
 import colors from '../config/colors';
 
 
-export default function HandicapChart( {data} ){
+export default function HandicapChart( {data, screen} ){
 
     let label = [];
     let handicapLines = [];
@@ -15,14 +15,31 @@ export default function HandicapChart( {data} ){
 
     data.map((round, index) => {
         if(!round.isOutOfMaxRound){
-            playedToLine.push(round.slopedPlayedTo)
-            handicapLines.push(round.newHandicap)
+            
+            let slopePlayedTo = round.slopedPlayedTo
+            if(slopePlayedTo.includes('+')){
+                slopePlayedTo = slopePlayedTo.replace('+', '-');
+            }
+            playedToLine.push(slopePlayedTo)
+
+            let handicapGa = round.newHandicap
+            if(handicapGa.includes('+')){
+                handicapGa = handicapGa.replace('+', '-');
+            }
+            handicapLines.push(handicapGa)
             label.push(index.toString())
         }
     })
 
+
+
+    let widthValue = Dimensions.get("window").width - 10;
+    if(screen === 'modal'){
+        widthValue = Dimensions.get("window").width - 20;
+    }
+
     return(
-        <View>
+        <>
             <LineChart
                 data={{
                     labels: label.reverse(),
@@ -32,36 +49,35 @@ export default function HandicapChart( {data} ){
                         },
                         {
                         data: playedToLine.reverse(),
-                        color: (opacity = 1) => `rgba(234, 168, 0, ${opacity})`,
+                        color: (opacity = 1) => `rgba(50, 76, 168, ${opacity})`,
                         }
-                    ]
+                    ],
+                    legend: ["GA", "Played to"]
                 }}
-                width={Dimensions.get("window").width - 10} 
+                width={widthValue} 
                 height={220}
                 withInnerLines= {false}
                 withVerticalLabels= {false}
+                yLabelsOffset={20}
                 chartConfig={{
+                    fillShadowGradientOpacity: 200,
                     decimalPlaces: 0,
                     backgroundColor: colors.primary,
                     backgroundGradientFrom: colors.primary,
                     backgroundGradientTo: colors.primary,
                     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    style: {
-                        borderRadius: 16
-                    },
                     propsForDots: {
-                        r: "4",
-                        strokeWidth: "2",
-                        stroke: colors.secondary,
+                        strokeWidth: "1",
+                        stroke: colors.backgroundColor,
                     }
                 }}
                 bezier
                 style={{
-                    marginVertical: 8,
-                    borderRadius: 16
+                    marginVertical: 2,
+                    borderRadius: 5
                 }}
             />
-        </View>
+        </>
     )
 }

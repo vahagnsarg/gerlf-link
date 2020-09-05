@@ -7,8 +7,11 @@ import {
     Text,
     Platform,
     StatusBar,
-    Image, Alert
+    Image, 
+    Alert,
+    Switch
 } from 'react-native';
+//import { Switch } from 'react-native-paper';
 
 import { 
     createDrawerNavigator,
@@ -17,6 +20,8 @@ import {
 import { AuthContext } from '../components/Context';
 
 import { Drawer } from 'react-native-paper';
+
+import global from '../config/global';
 
 let initialRender = true; // <-- Add this
 
@@ -34,6 +39,10 @@ export function DrawerContent(props){
 
     const { signOut } = React.useContext(AuthContext);
 
+    const [showChart, setShowChart] = React.useState(global.showChart);
+    const [showTopStats, setShowTopStats] =React.useState(global.showTopStats);
+    const [showFriendID, setShowFriendID] = React.useState(global.showFriendID);
+
     return(
         <SafeAreaView>
                 <Image source={require('../assets/gerlf_link_logo.png')} style={styles.image}/>
@@ -50,6 +59,32 @@ export function DrawerContent(props){
                         label='About'
                         onPress={() => {}}
                     />
+                </Drawer.Section>
+                <Drawer.Section>
+                    <View style={styles.toggleItem}>
+                        <Drawer.Item
+                            label='Show chart'
+                            style={styles.toggleText}
+                        />
+                        <Switch value={showChart} onValueChange={value => setShowChart(value)}/>
+                    </View>
+
+                    <View style={styles.toggleItem}>
+                        <Drawer.Item
+                            label='Show top stats'
+                            style={styles.toggleText}
+                        />
+                        <Switch value={showTopStats} onValueChange={value => setShowTopStats(value)}/>
+                    </View>
+
+                    <View style={styles.toggleItem}>
+                        <Drawer.Item
+                            label='Show friend ID'
+                            style={styles.toggleText}
+                        />
+                        <Switch value={showFriendID} onValueChange={value => setShowFriendID(value)}/>
+                    </View>
+
                 </Drawer.Section>
                 <Drawer.Section style={styles.bottomSection}>
                     <Drawer.Item 
@@ -81,6 +116,20 @@ const styles = StyleSheet.create({
 
     bottomSection:{
 
+    },
+    
+    toggleItem:{
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: "center",
+    },
+
+    toggleText:{
+        width: 146.5    
+    },
+
+    toggleToggle:{
+        flex: 4
     },
 
     image:{

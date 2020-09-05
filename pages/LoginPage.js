@@ -17,6 +17,7 @@ import AppButton from '../components/AppButton'
 import Screen from '../components/Screen'
 
 import colors from '../config/colors';
+import AppTextInput from '../components/AppTextInput';
 
 export function LoginScreen( ) {
     return (
@@ -40,11 +41,7 @@ function LoginPage() {
                     behavior={Platform.OS == "ios" ? "padding" : "height"}>
                     <View style={styles.container}>
                         <Image source={require('../assets/gerlf_link_logo.png')} style={styles.image}/>
-                        <Text style={styles.heading}>Enter Your GA</Text>
-                        <TextInput 
-                        style={styles.textInput}
-                        keyboardType="numeric"
-                        onChangeText={value => setInput(value)} />
+                        <AppTextInput title="Enter Your GA" onChange= {setInput} type='numeric'/>
 
                         <View style={{padding:20}}>
                             <AppButton 

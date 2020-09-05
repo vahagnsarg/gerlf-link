@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet, Text, View, ScrollView} from 'react-native';
 import HandicapHistoryItem from './HandicapHistoryItem';
 
 class HandicapHistoryTable extends Component {
@@ -14,23 +14,6 @@ class HandicapHistoryTable extends Component {
 
         return (
             <View style={styles.table}>
-                <View style={styles.row}>
-                    <View style={styles.headingDetail}>
-                        <Text style={styles.headingText} >round details</Text>
-                    </View>
-                    <View style={styles.headingScore}>
-                        <Text style={styles.headingText}>score</Text>
-                    </View>
-                    <View style={styles.headingScore}>
-                        <Text style={styles.headingText}>dh</Text>
-                    </View>
-                    <View style={styles.headingScore}>
-                        <Text style={styles.headingText}>pt</Text>
-                    </View>
-                    <View style={styles.headingScore}>
-                        <Text style={styles.headingText}>new ga</Text>
-                </View>
-            </View>
             {
                 data.map((round, index) => { // This will render a row for each data element.
                     let firstMaxRound = null;
@@ -76,7 +59,7 @@ const styles = StyleSheet.create({
     row:{
         height: 50,
         alignSelf: 'stretch', 
-        flexDirection: 'row' 
+        flexDirection: 'row',
     },
 
     headingText:{

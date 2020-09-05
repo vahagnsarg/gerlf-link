@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl, FlatList} from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl, FlatList, Dimensions} from 'react-native';
 import HighlightedStat from '../components/HighlightedStat';
+import HandicapHistoryItem from '../components/HandicapHistoryItem';
 import HandicapHistoryTable from '../components/HandicapHistoryTable';
 import AsyncStorage from '@react-native-community/async-storage';
 import colors from '../config/colors';
 import { round } from 'react-native-reanimated';
+import RoundsTableHeader from '../components/RoundsTableHeader';
+import TopStatsGrid from '../components/TopStatsGrid';
+import HandicapChart from '../components/HandicapChart';
 
 
 
@@ -279,6 +283,8 @@ class MyStats extends Component {
             )
         }
 
+        let maxRoundCourt = 0;
+
         return (
                 <View style={styles.mainContainer}>
                     <View style={styles.container_top}>
@@ -298,26 +304,20 @@ class MyStats extends Component {
                     <View style={styles.container_bottom}>
                         <ScrollView 
                             contentContainerStyle={{}}
-                            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refreshPage}/>}>
+                            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refreshPage}/>}
+                            stickyHeaderIndices={[2]}>
 
-                            <View style={styles.statsViewTop}>
-                                <View style={styles.topStat}>
-                                    <HighlightedStat title='Last Round' result={lastRoundScore} showPoints={true}/>
-                                </View>
+                            <TopStatsGrid 
+                                lastRoundScore={lastRoundScore} 
+                                bestRound={this.bestRound()} 
+                                averageRound={this.averageRound()} 
+                                neededRound={this.neededRound()}
+                            />
 
-                                <View style={styles.topStat}>
-                                    <HighlightedStat title='Best Round' result={this.bestRound()} showPoints={true}/>
-                                </View>
+                            <HandicapChart data={this.state.handicapHistory} />
 
-                            </View>
-                            <View style={styles.statsViewBottom}>
-                                <View style={styles.topStat}>
-                                    <HighlightedStat title='Average Round' result={this.averageRound()} showPoints={true}/>
-                                </View>
-
-                                <View style={styles.topStat}>
-                                    <HighlightedStat title='Play To Needed' result={this.neededRound()} showPoints={false}/>
-                                </View>
+                            <View style={{paddingLeft: 10, paddingRight: 10}}>
+                                <RoundsTableHeader/>
                             </View>
 
                             <View style={{padding: 10}}>
@@ -332,14 +332,6 @@ class MyStats extends Component {
                     </View>
                 </View>
             )
-
-            
-
-        // return (
-        //     <View style={styles.bodyContainer}>
-        //         {body}
-        //     </View>
-        // );
     }
     
 }
@@ -352,7 +344,8 @@ const styles = StyleSheet.create({
     
     mainContainer: {
         flex: 1,
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: colors.backgroundColor
     },
 
     container_top: {

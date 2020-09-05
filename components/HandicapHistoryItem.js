@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     mainContainer:{
         alignSelf: 'stretch', 
         marginTop: 3,
-        marginBottom: 3
+        marginBottom: 3,
     },
 
     table:{ 

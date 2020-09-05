@@ -232,7 +232,8 @@ function Friends( {navigation}) {
 
 const styles = StyleSheet.create({
     mainContainer:{
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.backgroundColor
     },
 
     modalStyle:{

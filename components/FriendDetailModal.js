@@ -7,10 +7,12 @@ import {
     Modal,
     ScrollView
 } from 'react-native'
-import HandicapHistoryTable from './HandicapHistoryTable'
+import HandicapHistoryTable from './HandicapHistoryTable';
+import RoundsTableHeader from './RoundsTableHeader'
 
 import { Appbar } from 'react-native-paper';
 import colors from '../config/colors';
+import HandicapChart from './HandicapChart';
 
 export default function FriendDetailModal( {name, golf_id, data, closeAction, handicapError, dataEmpty, modifiedWithoutRefresh} ){
 
@@ -69,12 +71,23 @@ export default function FriendDetailModal( {name, golf_id, data, closeAction, ha
             </Appbar.Header>
 
             <ScrollView
-                contentContainerStyle={{}}>
+                contentContainerStyle={{}}
+                stickyHeaderIndices={[1]}
+                style={{backgroundColor: colors.backgroundColor}}
+            >
+                <View style={{paddingLeft: 10, paddingRight: 10}}>
+                    <HandicapChart data={data.handicapHistory} />
+                </View>
+                
+                <View style={{paddingLeft: 10, paddingRight: 10}}>
+                    <RoundsTableHeader/>
+                </View>
                 <View style={{padding:10, paddingBottom:40}}>
                     <HandicapHistoryTable 
-                    data={data.handicapHistory}
-                    bestRound={bestRound(data)}
-                    worstRound={worstRound(data)}/>
+                        data={data.handicapHistory}
+                        bestRound={bestRound(data)}
+                        worstRound={worstRound(data)}
+                    />
                 </View>
             </ScrollView>
         </>

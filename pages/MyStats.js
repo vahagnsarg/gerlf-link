@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl, FlatList, Dimensions} from 'react-native';
-import HighlightedStat from '../components/HighlightedStat';
-import HandicapHistoryItem from '../components/HandicapHistoryItem';
-import HandicapHistoryTable from '../components/HandicapHistoryTable';
 import AsyncStorage from '@react-native-community/async-storage';
-import colors from '../config/colors';
-import { round } from 'react-native-reanimated';
+
+import HandicapHistoryTable from '../components/HandicapHistoryTable';
 import RoundsTableHeader from '../components/RoundsTableHeader';
 import TopStatsGrid from '../components/TopStatsGrid';
 import HandicapChart from '../components/HandicapChart';
+
+import colors from '../config/colors';
+import global from '../config/global';
 
 
 
@@ -76,7 +76,7 @@ class MyStats extends Component {
                             'Cache-Control': 'must-revalidate, private', 
                             'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjRBRTNDMkI3NTgxMUZGODhBMUM5RUI2M0Y3QjY5NEZBRDg2NUQ0QkUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJTdVBDdDFnUl80aWh5ZXRqOTdhVS10aGwxTDQifQ.eyJuYmYiOjE1OTc1MzU1NTMsImV4cCI6MTU5NzUzOTE1MywiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS5nb2xmLm9yZy5hdSIsImF1ZCI6WyJodHRwczovL2lkZW50aXR5LmdvbGYub3JnLmF1L3Jlc291cmNlcyIsIkdBIEFQSSJdLCJjbGllbnRfaWQiOiJHQS5BUEkuQ0xJRU5UIiwic3ViIjoiMzcxOTAiLCJhdXRoX3RpbWUiOjE1OTE0ODI0NDMsImlkcCI6ImxvY2FsIiwiVXNlck5hbWUiOiJ2YWhhZ24uc2FyZ0BnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsInNjb3BlIjpbIkdBLkFQSSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwYXNzd29yZCJdfQ.Qwq6b4de_hA_lDT3IJD_KHuRCtoVk_FWq914vkBVzorY7wb58fbxuRp0RUXQdp9PhSMFSsiZNbDOejNMENKWEO_dyEckUm3X3JDk6DGOnKqxjHwKVzuiKrn-7kL3nN5PwA-IGfMYAHPvQkbbkfV5z6BJ0wZQM06BCJYE2aas06cklbyNKoM2WZ2ZrgMFU9dFiHTX5onAYHkIgiGM7E1NxJq2Uu44stduDpldwqEFtCu_oFFyDYmEAs0NyGKCyqAXG2P0_AoQDw2wQzhIqNtmwqGiWhVQlSIAexNvIiqRKSk1FGRXEkqnlvaeUjnlgHWxO6R8gfgD6iGk04bMz_BmHw', 
                             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36', 
-                            'Ocp-Apim-Subscription-Key': 'f3185ed69cb44f9895dcb826fb9c368a', 
+                            'Ocp-Apim-Subscription-Key': global.authToken, 
                             'Expires': '-1', 
                             'Accept': '*/*', 
                             'Sec-Fetch-Site': 'same-site', 
@@ -137,7 +137,7 @@ class MyStats extends Component {
                         'Cache-Control': 'must-revalidate, private', 
                         'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjRBRTNDMkI3NTgxMUZGODhBMUM5RUI2M0Y3QjY5NEZBRDg2NUQ0QkUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJTdVBDdDFnUl80aWh5ZXRqOTdhVS10aGwxTDQifQ.eyJuYmYiOjE1OTc1MzU1NTMsImV4cCI6MTU5NzUzOTE1MywiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS5nb2xmLm9yZy5hdSIsImF1ZCI6WyJodHRwczovL2lkZW50aXR5LmdvbGYub3JnLmF1L3Jlc291cmNlcyIsIkdBIEFQSSJdLCJjbGllbnRfaWQiOiJHQS5BUEkuQ0xJRU5UIiwic3ViIjoiMzcxOTAiLCJhdXRoX3RpbWUiOjE1OTE0ODI0NDMsImlkcCI6ImxvY2FsIiwiVXNlck5hbWUiOiJ2YWhhZ24uc2FyZ0BnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsInNjb3BlIjpbIkdBLkFQSSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwYXNzd29yZCJdfQ.Qwq6b4de_hA_lDT3IJD_KHuRCtoVk_FWq914vkBVzorY7wb58fbxuRp0RUXQdp9PhSMFSsiZNbDOejNMENKWEO_dyEckUm3X3JDk6DGOnKqxjHwKVzuiKrn-7kL3nN5PwA-IGfMYAHPvQkbbkfV5z6BJ0wZQM06BCJYE2aas06cklbyNKoM2WZ2ZrgMFU9dFiHTX5onAYHkIgiGM7E1NxJq2Uu44stduDpldwqEFtCu_oFFyDYmEAs0NyGKCyqAXG2P0_AoQDw2wQzhIqNtmwqGiWhVQlSIAexNvIiqRKSk1FGRXEkqnlvaeUjnlgHWxO6R8gfgD6iGk04bMz_BmHw', 
                         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36', 
-                        'Ocp-Apim-Subscription-Key': 'f3185ed69cb44f9895dcb826fb9c368a', 
+                        'Ocp-Apim-Subscription-Key': global.authToken, 
                         'Expires': '-1', 
                         'Accept': '*/*', 
                         'Sec-Fetch-Site': 'same-site', 
@@ -208,8 +208,6 @@ class MyStats extends Component {
         return lowestRound;
     }
 
-    
-
     averageRound = () =>{
         const rounds = this.state.handicapHistory;
         let totalRoundScore = 0;
@@ -258,14 +256,11 @@ class MyStats extends Component {
         }
     }
 
-
-
     componentDidMount = () => {
         
         this.getData();
 
     };
-
 
     render() {
 
@@ -274,7 +269,6 @@ class MyStats extends Component {
             lastRoundScore = this.state.handicapHistory[0].handicappingScore;
         }
 
-        let body = null
         if(this.state.status === 'offline'){
             return (
                 <View style={styles.loadView}>
@@ -283,7 +277,13 @@ class MyStats extends Component {
             )
         }
 
-        let maxRoundCourt = 0;
+        let stickyHeader = 2;
+        if(!global.showTopStats && !global.showChart){
+            stickyHeader = 0
+        }
+        if((global.showTopStats && !global.showChart) || (!global.showTopStats && global.showChart)){
+            stickyHeader = 1
+        }
 
         return (
                 <View style={styles.mainContainer}>
@@ -305,16 +305,25 @@ class MyStats extends Component {
                         <ScrollView 
                             contentContainerStyle={{}}
                             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refreshPage}/>}
-                            stickyHeaderIndices={[2]}>
+                            stickyHeaderIndices={[stickyHeader]}
+                            style={{width: Dimensions.get("window").width -10}}>
+                            
+                            {
+                                global.showTopStats 
+                                ?<TopStatsGrid 
+                                    lastRoundScore={lastRoundScore} 
+                                    bestRound={this.bestRound()} 
+                                    averageRound={this.averageRound()} 
+                                    neededRound={this.neededRound()}
+                                /> 
+                                : null
+                            }
 
-                            <TopStatsGrid 
-                                lastRoundScore={lastRoundScore} 
-                                bestRound={this.bestRound()} 
-                                averageRound={this.averageRound()} 
-                                neededRound={this.neededRound()}
-                            />
-
-                            <HandicapChart data={this.state.handicapHistory} />
+                            {
+                                global.showChart 
+                                ? <HandicapChart data={this.state.handicapHistory} />
+                                : null
+                            }
 
                             <View style={{paddingLeft: 10, paddingRight: 10}}>
                                 <RoundsTableHeader/>

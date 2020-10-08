@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { 
     StyleSheet, 
     ActivityIndicator, 
@@ -10,20 +10,16 @@ import {
     Image, 
     Alert,
     Switch
-} from 'react-native';
-//import { Switch } from 'react-native-paper';
-
-import { 
-    createDrawerNavigator,
-    DrawerItem
-} from '@react-navigation/drawer';
-import { AuthContext } from '../components/Context';
-
+} from 'react-native';;
 import { Drawer } from 'react-native-paper';
+import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import { AuthContext } from '../components/Context';
 
 import global from '../config/global';
 
-let initialRender = true; // <-- Add this
+let initialRender = true;
 
 export function DrawerContent(props){
 
@@ -37,11 +33,25 @@ export function DrawerContent(props){
     }
 
 
-    const { signOut } = React.useContext(AuthContext);
+    const { signOut } = useContext(AuthContext);
 
-    const [showChart, setShowChart] = React.useState(global.showChart);
-    const [showTopStats, setShowTopStats] =React.useState(global.showTopStats);
-    const [showFriendID, setShowFriendID] = React.useState(global.showFriendID);
+    useEffect(() => {
+
+        //Get tge latest Global Toggles form Async 
+
+    }, []); 
+
+    function updateToggle(toggle, value, globalVar){
+        toggle(value);
+
+        global[globalVar] = value;
+
+        //Store Async Here
+    }
+
+    const [showChart, setShowChart] = useState(global.showChart);
+    const [showTopStats, setShowTopStats] =useState(global.showTopStats);
+    const [showFriendID, setShowFriendID] = useState(global.showFriendID);
 
     return(
         <SafeAreaView>
@@ -66,7 +76,7 @@ export function DrawerContent(props){
                             label='Show chart'
                             style={styles.toggleText}
                         />
-                        <Switch value={showChart} onValueChange={value => setShowChart(value)}/>
+                        <Switch value={showChart} onValueChange={value => updateToggle(setShowChart, value, 'showChart')}/>
                     </View>
 
                     <View style={styles.toggleItem}>
@@ -74,7 +84,7 @@ export function DrawerContent(props){
                             label='Show top stats'
                             style={styles.toggleText}
                         />
-                        <Switch value={showTopStats} onValueChange={value => setShowTopStats(value)}/>
+                        <Switch value={showTopStats} onValueChange={value => updateToggle(setShowTopStats, value, 'showTopStats')}/>
                     </View>
 
                     <View style={styles.toggleItem}>
@@ -82,7 +92,7 @@ export function DrawerContent(props){
                             label='Show friend ID'
                             style={styles.toggleText}
                         />
-                        <Switch value={showFriendID} onValueChange={value => setShowFriendID(value)}/>
+                        <Switch value={showFriendID} onValueChange={value => updateToggle(setShowFriendID, value, 'showFriendID')}/>
                     </View>
 
                 </Drawer.Section>

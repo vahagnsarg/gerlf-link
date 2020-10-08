@@ -12,6 +12,7 @@ import RoundsTableHeader from './RoundsTableHeader'
 
 import { Appbar } from 'react-native-paper';
 import colors from '../config/colors';
+import global from '../config/global';
 import HandicapChart from './HandicapChart';
 
 export default function FriendDetailModal( {name, golf_id, data, closeAction, handicapError, dataEmpty, modifiedWithoutRefresh} ){
@@ -72,12 +73,17 @@ export default function FriendDetailModal( {name, golf_id, data, closeAction, ha
 
             <ScrollView
                 contentContainerStyle={{}}
-                stickyHeaderIndices={[1]}
+                stickyHeaderIndices={global.showChart ? [1] : [0]}
                 style={{backgroundColor: colors.backgroundColor}}
             >
-                <View style={{padding: 10}}>
-                    <HandicapChart data={data.handicapHistory} screen='modal'/>
-                </View>
+                {
+                    global.showChart 
+                    ? <View style={{padding: 10}}>
+                        <HandicapChart data={data.handicapHistory} screen='modal'/>
+                    </View>
+                    : null
+                }
+                
 
                 <View style={{paddingLeft: 10, paddingRight: 10}}>
                     <RoundsTableHeader/>

@@ -226,6 +226,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary, 
         flex:1
     }
-})
+}) 
 
 export default Friends;

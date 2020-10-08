@@ -13,25 +13,19 @@ import {
 import { tabNavigator } from './navigation/TabScreens'
 import { DrawerContent } from './navigation/DrawerContent'
 
-import MyStats from './pages/MyStats';
-import Friends from './pages/Friends';
 import {LoginScreen} from './pages/LoginPage';
 import { getHandicap } from './API/API';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from './components/Context';
-import Screen from './components/Screen';
 
 import colors from './config/colors';
 
 const Drawer = createDrawerNavigator();
-const LoginStack = createStackNavigator();
 
 
 export default function App() {
@@ -41,23 +35,29 @@ export default function App() {
 
   const authContext = React.useMemo(() => ({
     login: (value) => {
-        getHandicap(value).then(response => {
-                  if(response.ok){
-                    return response.json()
-                  }
+        getHandicap(value)
+          .then(response => {
+              if(response.ok){
+                return response.json()
+              }
 
-                  Alert.alert('There was an erorr getting that GA number. Please try again')
-              })
-            .then(data => {
+              if(response.error === 401){
+                console.log('Something went wrong with the token');
+              }
+
+              Alert.alert('There was an erorr getting that GA number. Please try again')
+          })
+          .then(data => {
                 if(data != undefined){
                   setGolfId(data);
                   storeData(value);
                   setIsLoading(false);
                 }
             }
-        ).catch(e => {
-            Alert.alert('Seems like you offline')
-        })
+          )
+          .catch(e => {
+              Alert.alert('Seems like you offline')
+          })
     },
 
     signOut: () =>{
@@ -94,6 +94,7 @@ export default function App() {
       await AsyncStorage.setItem('golf_id', value)
     } catch (e) {
       // saving error
+      console.log(e);
     }
   }
 

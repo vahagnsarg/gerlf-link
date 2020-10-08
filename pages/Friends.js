@@ -55,6 +55,11 @@ function Friends( {navigation}) {
             console.log(e); 
         }
     }
+
+    function updateFriends(friends){
+        setFriends(friends);
+        storeFriends(friends);
+    }
     
     function addFriend(name, golf_id){
 

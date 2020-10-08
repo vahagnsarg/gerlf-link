@@ -32,3 +32,8 @@ export const getHandicap = handicapNumber => {
                     }
                 })
 };
+
+
+export const getToken = userName => {
+    
+};

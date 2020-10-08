@@ -7,6 +7,7 @@ import RoundsTableHeader from '../components/RoundsTableHeader';
 import TopStatsGrid from '../components/TopStatsGrid';
 import HandicapChart from '../components/HandicapChart';
 import { getHandicap } from '../API/API';
+import { bestRound, worstRound, averageRound, neededRound } from '../Utils/Utils';
 
 import colors from '../config/colors';
 import global from '../config/global';
@@ -17,8 +18,8 @@ class MyStats extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "handicapNumber": '',
-            "handicapDetails": {
+            handicapNumber: '',
+            handicapDetails: {
                 capPoint: "",
                 capPointDate: "",
                 clubADGroup: "",
@@ -38,8 +39,8 @@ class MyStats extends Component {
                 noOfGLCupROunds: "",
                 playerType: ""
             },
-            "handicapHistory": [],
-            "status": 'offline',
+            handicapHistory: [],
+            status: 'offline',
             refreshing: false
         };
     }
@@ -66,9 +67,9 @@ class MyStats extends Component {
 
                 this.setState(newState);
             }else{
+                //First load of page
 
                 const handicapNumber = await AsyncStorage.getItem('golf_id')
-
                 getHandicap(handicapNumber)
                     .then(response => response.json())
                     .then(data => {
@@ -82,7 +83,6 @@ class MyStats extends Component {
                         localDetails.handicapNumber = data.handicapDetails.golfLinkNo;
                         localDetails.handicapDetails = data.handicapDetails;
                         localDetails.handicapHistory = data.handicapHistory;
-                        
                         
                         this.setState(newState)
                         this.storeData(localDetails);
@@ -106,116 +106,27 @@ class MyStats extends Component {
     }
 
     handicapEndPoint = () => {
-
-        //let handicapNumber = '3010602055';
         let handicapNumber = this.state.handicapNumber 
-        
-            getHandicap(handicapNumber)
-                .then(response => response.json())
-                .then(data => {
-                    let newState = {...this.state}
-                    let localDetails = {};
-                    newState.handicapNumber = data.handicapDetails.golfLinkNo;
-                    newState.handicapDetails = data.handicapDetails;
-                    newState.handicapHistory = data.handicapHistory;
-                    newState.status = 'online';
+        getHandicap(handicapNumber)
+            .then(response => response.json())
+            .then(data => {
+                let newState = {...this.state}
+                let localDetails = {};
+                newState.handicapNumber = data.handicapDetails.golfLinkNo;
+                newState.handicapDetails = data.handicapDetails;
+                newState.handicapHistory = data.handicapHistory;
+                newState.status = 'online';
 
-                    localDetails.handicapNumber = data.handicapDetails.golfLinkNo;
-                    localDetails.handicapDetails = data.handicapDetails;
-                    localDetails.handicapHistory = data.handicapHistory;
-                    
-                    this.setState(newState)
-                    this.storeData(localDetails);
-                }
+                localDetails.handicapNumber = data.handicapDetails.golfLinkNo;
+                localDetails.handicapDetails = data.handicapDetails;
+                localDetails.handicapHistory = data.handicapHistory;
+                
+                this.setState(newState)
+                this.storeData(localDetails);
+            }
         );
 
-        console.log('refreshed')
-    }
-
-    refreshData = () => {
-        this.handicapEndPoint;
-
-        return true
-    }
-        
-
-    bestRound = () =>{
-        const rounds = this.state.handicapHistory;
-        let highestRound = '0';
-
-        for(let x in rounds){
-            if(rounds[x].isOutOfMaxRound){
-                continue;
-            }
-            if(rounds[x].handicappingScore > highestRound && rounds[x].handicappingScore !== 'N/A'){
-                highestRound = rounds[x].handicappingScore;
-            }
-        }
-        return highestRound;
-    }
-
-    worstRound = () =>{
-        const rounds = this.state.handicapHistory;
-        let lowestRound = 100;
-
-        for(let x in rounds){
-            if(rounds[x].isOutOfMaxRound){
-                continue;
-            }
-            if(rounds[x].handicappingScore < lowestRound && rounds[x].handicappingScore !== 'N/A'){
-                lowestRound = rounds[x].handicappingScore;
-            }
-        }
-
-        return lowestRound;
-    }
-
-    averageRound = () =>{
-        const rounds = this.state.handicapHistory;
-        let totalRoundScore = 0;
-        let noOfRounds = 0;
-
-        for(let x in rounds){
-            if(rounds[x].isOutOfMaxRound){
-                continue;
-            }
-            if(rounds[x].handicappingScore !== 'N/A'){
-                totalRoundScore = totalRoundScore + parseInt(rounds[x].handicappingScore);
-                noOfRounds++;
-            }
-        }
-        let avereageScrore = Math.floor(totalRoundScore/noOfRounds);
-        return avereageScrore;
-    }
-
-    neededRound = () => {
-        const rounds = this.state.handicapHistory;
-        let top8Score = 0;
-        let lastRoundFlagged = {
-            flagged: false,
-            slopedPlayedTo: 0
-        };
-
-        for(let x in rounds){
-            if(rounds[x].isOutOfMaxRound){
-                continue;
-            }
-            if(rounds[x].top8ScoreFlag){
-                top8Score = top8Score + parseInt(rounds[x].slopedPlayedTo);
-            }
-
-            if(x === 19 && rounds[x].top8ScoreFlag){
-                lastRoundFlagged.flagged = true;
-                lastRoundFlagged.slopedPlayedTo = rounds[x].slopedPlayedTo;
-            }
-        }
-
-        if(lastRoundFlagged.flagged){
-            return lastRoundFlagged.slopedPlayedTo;
-        }else{
-            //Caluclate this fucker
-            return '0'
-        }
+        console.log('refreshed');
     }
 
     componentDidMount = () => {
@@ -274,9 +185,9 @@ class MyStats extends Component {
                                 global.showTopStats 
                                 ?<TopStatsGrid 
                                     lastRoundScore={lastRoundScore} 
-                                    bestRound={this.bestRound()} 
-                                    averageRound={this.averageRound()} 
-                                    neededRound={this.neededRound()}
+                                    bestRound={bestRound(this.state.handicapHistory)} 
+                                    averageRound={averageRound(this.state.handicapHistory)} 
+                                    neededRound={neededRound(this.state.handicapHistory)}
                                 /> 
                                 : null
                             }
@@ -294,8 +205,8 @@ class MyStats extends Component {
                             <View style={{padding: 10}}>
                                 <HandicapHistoryTable 
                                     data={this.state.handicapHistory} 
-                                    bestRound={this.bestRound()}
-                                    worstRound={this.worstRound()}
+                                    bestRound={bestRound(this.state.handicapHistory)}
+                                    worstRound={worstRound(this.state.handicapHistory)}
                                     />
                             </View>
 

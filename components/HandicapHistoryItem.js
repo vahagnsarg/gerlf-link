@@ -45,12 +45,14 @@ class HandicapHistoryItem extends Component {
 
         let badIcon = null;
         if(round.handicappingScore === this.props.worstRound && !round.isOutOfMaxRound){
-            badIcon = <MaterialCommunityIcons name="emoticon-poop" size={24} color="black" />
+            // badIcon = <MaterialCommunityIcons name="emoticon-poop" size={24} color="black" />
+            badIcon = <Text style={styles.emojiIcon}>💩</Text>
         }
 
         let goodIcon = null;
         if(round.handicappingScore === this.props.bestRound && !round.isOutOfMaxRound){
-            goodIcon = <FontAwesome5 name="smile" size={24} color={colors.primary} />
+            // goodIcon = <FontAwesome5 name="smile" size={24} color={colors.primary} />
+            goodIcon = <Text style={styles.emojiIcon}>🔥</Text>
         }
 
         const showMoreInformationToggle = this.state.showMoreInformation;
@@ -139,6 +141,10 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch', 
         marginTop: 3,
         marginBottom: 3,
+    },
+
+    emojiIcon:{
+        fontSize: 24
     },
 
     table:{ 

@@ -12,9 +12,7 @@ import {
     Switch
 } from 'react-native';;
 import { Drawer } from 'react-native-paper';
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import { AuthContext } from '../components/Context';
 
 import global from '../config/global';

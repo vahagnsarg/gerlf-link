@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, ScrollView, RefreshControl, FlatList, Dimensions} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -10,9 +10,6 @@ import { getHandicap } from '../API/API';
 import { bestRound, worstRound, averageRound, neededRound } from '../Utils/Utils';
 
 import colors from '../config/colors';
-import global from '../config/global';
-
-
 
 class MyStats extends Component {
     constructor(props) {
@@ -135,6 +132,7 @@ class MyStats extends Component {
 
     };
 
+
     render() {
 
         let lastRoundScore = ''
@@ -151,10 +149,10 @@ class MyStats extends Component {
         }
 
         let stickyHeader = 2;
-        if(!global.showTopStats && !global.showChart){
+        if(!this.props.showTopStats && !this.props.showChart){
             stickyHeader = 0
         }
-        if((global.showTopStats && !global.showChart) || (!global.showTopStats && global.showChart)){
+        if((this.props.showTopStats && !this.props.showChart) || (!this.props.showTopStats && this.props.showChart)){
             stickyHeader = 1
         }
 
@@ -182,7 +180,7 @@ class MyStats extends Component {
                             style={{width: Dimensions.get("window").width -10}}>
                             
                             {
-                                global.showTopStats 
+                                this.props.showTopStats 
                                 ?<TopStatsGrid 
                                     lastRoundScore={lastRoundScore} 
                                     bestRound={bestRound(this.state.handicapHistory)} 
@@ -193,7 +191,7 @@ class MyStats extends Component {
                             }
 
                             {
-                                global.showChart 
+                                this.props.showChart 
                                 ? <HandicapChart data={this.state.handicapHistory} />
                                 : null
                             }

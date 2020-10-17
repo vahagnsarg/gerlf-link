@@ -31,25 +31,17 @@ export function DrawerContent(props){
     }
 
 
-    const { signOut } = useContext(AuthContext);
+    const { 
+        signOut, 
+        showChart,
+        showTopStats,
+        showFriendID, 
+        updateToggle,
+    } = useContext(AuthContext);
 
     useEffect(() => {
 
-        //Get tge latest Global Toggles form Async 
-
     }, []); 
-
-    function updateToggle(toggle, value, globalVar){
-        toggle(value);
-
-        global[globalVar] = value;
-
-        //Store Async Here
-    }
-
-    const [showChart, setShowChart] = useState(global.showChart);
-    const [showTopStats, setShowTopStats] =useState(global.showTopStats);
-    const [showFriendID, setShowFriendID] = useState(global.showFriendID);
 
     return(
         <SafeAreaView>
@@ -65,7 +57,7 @@ export function DrawerContent(props){
                     />
                     <Drawer.Item
                         label='About'
-                        onPress={() => {}}
+                        onPress={() => {props.navigation.navigate('About')}}
                     />
                 </Drawer.Section>
                 <Drawer.Section>
@@ -74,7 +66,7 @@ export function DrawerContent(props){
                             label='Show chart'
                             style={styles.toggleText}
                         />
-                        <Switch value={showChart} onValueChange={value => updateToggle(setShowChart, value, 'showChart')}/>
+                        <Switch value={showChart} onValueChange={value => updateToggle("setShowChart", value, 'showChart')}/>
                     </View>
 
                     <View style={styles.toggleItem}>
@@ -82,7 +74,7 @@ export function DrawerContent(props){
                             label='Show top stats'
                             style={styles.toggleText}
                         />
-                        <Switch value={showTopStats} onValueChange={value => updateToggle(setShowTopStats, value, 'showTopStats')}/>
+                        <Switch value={showTopStats} onValueChange={value => updateToggle("setShowTopStats", value, 'showTopStats')}/>
                     </View>
 
                     <View style={styles.toggleItem}>
@@ -90,7 +82,7 @@ export function DrawerContent(props){
                             label='Show friend ID'
                             style={styles.toggleText}
                         />
-                        <Switch value={showFriendID} onValueChange={value => updateToggle(setShowFriendID, value, 'showFriendID')}/>
+                        <Switch value={showFriendID} onValueChange={value => updateToggle("setShowFriendID", value, 'showFriendID')}/>
                     </View>
 
                 </Drawer.Section>

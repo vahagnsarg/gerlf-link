@@ -1,4 +1,4 @@
-import React , { useEffect , useState }from 'react';
+import React , { useEffect , useState, useContext }from 'react';
 import {  
     StyleSheet, 
     View, 
@@ -7,16 +7,22 @@ import {
     Modal,
     ScrollView
 } from 'react-native'
+import { AuthContext } from '../components/Context';
 import HandicapHistoryTable from './HandicapHistoryTable';
 import RoundsTableHeader from './RoundsTableHeader'
 import { bestRound, worstRound } from '../Utils/Utils';
 
+
 import { Appbar } from 'react-native-paper';
 import colors from '../config/colors';
-import global from '../config/global';
 import HandicapChart from './HandicapChart';
 
 export default function FriendDetailModal( {name, golf_id, data, closeAction, handicapError, dataEmpty, modifiedWithoutRefresh} ){
+    
+    const { 
+        showChart,
+        showFriendID, 
+    } = useContext(AuthContext);
 
     if(handicapError || dataEmpty || modifiedWithoutRefresh){
         return(
@@ -42,11 +48,11 @@ export default function FriendDetailModal( {name, golf_id, data, closeAction, ha
 
             <ScrollView
                 contentContainerStyle={{}}
-                stickyHeaderIndices={global.showChart ? [1] : [0]}
+                stickyHeaderIndices={showChart ? [1] : [0]}
                 style={{backgroundColor: colors.backgroundColor}}
             >
                 {
-                    global.showChart 
+                    showChart 
                     ? <View style={{padding: 10}}>
                         <HandicapChart data={data.handicapHistory} screen='modal'/>
                     </View>

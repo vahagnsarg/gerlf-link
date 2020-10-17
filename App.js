@@ -3,17 +3,16 @@ import {
   StyleSheet, 
   ActivityIndicator, 
   View, 
-  SafeAreaView, 
   Alert,
   Platform,
   StatusBar,
-  Button
 } from 'react-native';
 
 import { tabNavigator } from './navigation/TabScreens'
+import { AboutScreen } from './navigation/AboutScreen'
 import { DrawerContent } from './navigation/DrawerContent'
 
-import {LoginScreen} from './pages/LoginPage';
+import { LoginScreen } from './pages/LoginPage';
 import { getHandicap } from './API/API';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -27,13 +26,16 @@ import colors from './config/colors';
 
 const Drawer = createDrawerNavigator();
 
-
 export default function App() {
 
-  const [golfId, setGolfId] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [golfId, setGolfId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const authContext = React.useMemo(() => ({
+  const [showChart, setShowChart] = useState(true);
+  const [showTopStats, setShowTopStats] =useState(true);
+  const [showFriendID, setShowFriendID] = useState(true);
+
+  const authContext = useMemo(() => ({
     login: (value) => {
         getHandicap(value)
           .then(response => {
@@ -50,7 +52,7 @@ export default function App() {
           .then(data => {
                 if(data != undefined){
                   setGolfId(data);
-                  storeData(value);
+                  storeGolfId(value);
                   setIsLoading(false);
                 }
             }
@@ -60,11 +62,36 @@ export default function App() {
           })
     },
 
-    signOut: () =>{
+    signOut: () => {
         setGolfId(null);
         clearAppData();
         setIsLoading(false);
-    }
+    },
+
+    showChart,
+    showTopStats,
+    showFriendID,
+
+    updateToggle: (toggle, value) => {
+      switch(toggle){
+        case 'setShowChart':
+          setShowChart(value);
+          storeChartToggle(value);
+          break;
+        case 'setShowTopStats':
+          setShowTopStats(value);
+          storeStateToggle(value);
+          break;
+
+        case 'setShowFriendID':
+          setShowFriendID(value);
+          storeFirendIdToggle(value);
+          break;
+      }
+
+      //Store Async Here
+  },
+    
 }));
 
   const clearAppData = async function() {
@@ -78,10 +105,25 @@ export default function App() {
 
   const getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('golf_id')
-      console.log(value)
-      if(value !== null) {
-        setGolfId(value);
+      const golf_id_value = await AsyncStorage.getItem('golf_id')
+      console.log(golf_id_value)
+      if(golf_id_value !== null) {
+        setGolfId(golf_id_value);
+      }
+
+      const chart_toggle = await AsyncStorage.getItem('show_chart_toggle')
+      if(chart_toggle !== null) {
+        setShowChart(chart_toggle === 'true');
+      }
+
+      const stats_toggle = await AsyncStorage.getItem('show_stats_toggle')
+      if(stats_toggle !== null) {
+        setShowTopStats(stats_toggle === 'true');
+      }
+
+      const friend_id_toggle = await AsyncStorage.getItem('show_friend_id_toggle')
+      if(friend_id_toggle !== null) {
+        setShowFriendID(friend_id_toggle === 'true');
       }
     } catch(e) {
       // error reading value
@@ -89,11 +131,34 @@ export default function App() {
     }
   }
 
-  const storeData = async (value) => {
+  const storeGolfId = async (value) => {
     try {
       await AsyncStorage.setItem('golf_id', value)
     } catch (e) {
-      // saving error
+      console.log(e);
+    }
+  }
+
+  const storeChartToggle = async (value) => {
+    try {
+      await AsyncStorage.setItem('show_chart_toggle', value.toString())
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const storeStateToggle = async (value) => {
+    try {
+      await AsyncStorage.setItem('show_stats_toggle', value.toString())
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const storeFirendIdToggle = async (value) => {
+    try {
+      await AsyncStorage.setItem('show_friend_id_toggle', value.toString())
+    } catch (e) {
       console.log(e);
     }
   }
@@ -135,6 +200,7 @@ export default function App() {
               edgeWidth={150}
               >
                 <Drawer.Screen name="MainScreen" component={tabNavigator} />
+                <Drawer.Screen name="About" component={AboutScreen} />
               </Drawer.Navigator>
             
             ) : (

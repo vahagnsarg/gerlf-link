@@ -11,6 +11,7 @@ import colors from '../config/colors';
 
 
 function Screen(props){
+
     return(
         <SafeAreaView style={styles.containerSafeView}>
             {props.children}
@@ -21,7 +22,6 @@ function Screen(props){
 const styles = StyleSheet.create({
     containerSafeView: {
         flex: 1,
-
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
 })

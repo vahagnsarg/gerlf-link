@@ -1,16 +1,8 @@
-import React, { useEffect, useState, useMemo} from 'react';
-import { 
-    StyleSheet, 
-    ActivityIndicator, 
-    View, 
-    SafeAreaView, 
-    Alert,
-    Platform,
-    StatusBar,
-    Button
-} from 'react-native';
+import React, { useEffect, useState, useMemo, useContext} from 'react';
 import MyStats from '../pages/MyStats';
 import Friends from '../pages/Friends';
+import { AuthContext } from '../components/Context';
+
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -25,9 +17,20 @@ const FriendStack = createStackNavigator();
 
 
 function MyStatsScreen() {
+
+    const { 
+        showChart,
+        showTopStats,
+        showFriendID, 
+    } = useContext(AuthContext);
+
     return (
         <Screen>
-        <MyStats/>
+            <MyStats 
+            showChart={showChart}
+            showTopStats={showTopStats}
+            showFriendID={showFriendID}
+            />
         </Screen> 
     );
 }
@@ -35,7 +38,7 @@ function MyStatsScreen() {
 function FriendsScreen( {navigation} ) {
     return (
         <Screen>
-        <Friends navigation={navigation}/>
+            <Friends navigation={navigation}/>
         </Screen>
     );
 }
@@ -62,7 +65,6 @@ function FriendsStackScreen() {
         </FriendStack.Navigator>
     );
 }
-
 
 export function tabNavigator() {
     return( 

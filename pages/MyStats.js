@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignSelf:"stretch",
         paddingTop: 10,
-        marginBottom: 5
+        paddingBottom: 20
     },
 
     container_bottom: {
